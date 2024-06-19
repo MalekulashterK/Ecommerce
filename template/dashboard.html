@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Easy Shopping Cart For All Shopkeepers For Better Customer Self-Service</title>
+  <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <meta name="theme-color" content="linear-gradient(to bottom, #61daff, #656bff)">
+   <meta name="description" content="We will simply add to cart using javascript localstorage">
+   <meta name="keywords" content="add to cart, add to cart javascript, localstorage add to cart, ecommerce shopping javascript, shopping cart demo">
+   <meta name="author" content="Nathan S.R."><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.6.0/css/all.min.css'><link rel="stylesheet" href="./style.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
+
+:root {
+  --bodyFonts: 'Josefin Sans', sans-serif;
+  --pinkColor: #5557F3;
+  --titleColor: #000000;
+  --bodyColor: #666666;
+  --lightblueColor: #8D99FF;
+  --whiteColor: #ffffff;
+  --fontSize: 16px;
+  --transition: .5s;
+}
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Noto Sans', sans-serif !important;
+}
+a,
+a:hover {
+  text-decoration: none !important;
+}
+img {
+  max-width: 100%;
+}
+hr {
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+.pt-100 { padding-top: 100px; }
+.pt-45 { padding-top: 45px; }
+#not_found {
+  text-align: center;
+  color: red;
+}
+.grand-total {
+  margin-top: 1rem;
+  text-align: center;
+  font-weight: 600;
+}
+.table {
+  margin-bottom: 0 !important;
+}
+.default-btn {
+  padding: 12px 25px 10px;
+  text-align: center;
+  color: var(--whiteColor) !important;
+  font-size: var(--fontSize);
+  transition: var(--transition);
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  border-radius: 8px;
+  z-index: 0;
+  background: var(--pinkColor);
+  overflow: hidden;
+  white-space: nowrap;
+  border: 0;
+}
+.default-btn:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 550px;
+  height: 550px;
+  margin: auto;
+  background: var(--lightblueColor);
+  border-radius: 8px;
+  z-index: -1;
+  transform-origin: top center;
+  transform: translateX(-50%) translateY(-5%) scale(0.4);
+  transition: transform .9s;
+}
+.default-btn:hover {
+  color: var(--greenColor) !important;
+}
+.default-btn:hover:before {
+  transition: transform 1s;
+  transform: translateX(-45%) translateY(0) scale(1);
+  transform-origin: bottom center;
+}
+.btn-success {
+  background-color: #F96B6A !important;
+  border-color: #F96B6A !important;
+}
+.featured-area {
+  background-color: wheat;
+}
+.featured-tab-area .tabs {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  float: right;
+}
+.featured-tab-area .tabs li {
+  display: inline-block;
+  line-height: initial;
+  margin-right: 20px;
+}
+.featured-tab-area .tabs li a {
+  display: inline-block;
+  position: relative;
+  color: var(--titleColor);
+  padding: 13px 26px 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.featured-tab-area .tabs li.active a {
+  background-color: var(--pinkColor);
+  color: var(--whiteColor);
+}
+.featured-tab-area .tabs li.current a {
+  background-color: var(--pinkColor);
+  color: var(--whiteColor);
+}
+.featured-tab-area-ml .tabs {
+  margin-top: 0 !important;
+  float: left;
+}
+.tab .tabs_item {
+  display: none;
+}
+.tab .tabs_item:first-child {
+  display: block;
+}
+.featured-item {
+  margin-bottom: 30px;
+  background-color: var(--whiteColor);
+  border-radius: 5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+
+.featured-item .featured-item-img {
+  position: relative;
+  z-index: 1;
+  transition: 0.3s linear;
+  overflow: hidden;
+}
+.featured-item .featured-item-img a {
+  display: block;
+}
+.featured-item .featured-item-img a img {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 4px solid var(--whiteColor);
+  transition: 0.3s linear;
+}
+
+.featured-item .featured-item-img a img:hover {
+  scale: 1.08;
+              -webkit-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -o-transform: scale(1.1);
+            transform: scale(1.1);
+
+} 
+
+.featured-item .content {
+  padding: 20px 15px;
+  background-color: khaki;
+}
+.featured-item .content h3 {
+  margin-bottom: 10px;
+}
+.featured-item .content h3 a {
+  color: var(--titleColor);
+  -webkit-transition: var(--transition);
+  transition: var(--transition);
+  font-weight: bold;
+}
+.featured-item .content .content-in {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 12px 10px;
+  border-radius: 3px;
+}
+.featured-item .content .content-in i {
+  color: #ffcc00;
+}
+.featured-item .content .content-in span {
+  font-size: 15px;
+  color: var(--titleColor);
+  font-weight: 500;
+}
+.featured-item .content .content-in h4 {
+  font-size: 15px;
+  color: var(--titleColor);
+  font-weight: 500;
+  margin-bottom: 0;
+}
+.featured-item .content .featured-content-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px 0 0;
+}
+.featured-tab-area .tabs li {
+  margin-right: 5px;
+}
+#staticBackdropLabel {
+  font-weight: bold;
+}
+/* responsive css */
+@media only screen and (max-width: 767px) {
+  .featured-tab-area .tabs {
+    margin: 20px 0 0;
+    float: none;
+    text-align: left;
+  }
+  .featured-tab-area .tabs li:last-child {
+    margin-right: 5px;
+  }
+  .featured-tab-area .tabs li a {
+    font-size: 14px;
+    padding: 12px 16px 9px;
+  }
+  .featured-item .content {
+    padding: 20px 10px;
+  }
+  .featured-item .content h3 {
+    font-size: 19px;
+  }
+  .featured-item .content .content-in span {
+    font-size: 14px;
+  }
+  .featured-item .content .content-in h4 {
+    font-size: 14px;
+  }
+  .featured-item .content .featured-content-list {
+    padding: 12px 0 0;
+  }
+}
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .featured-item .content {
+    padding: 20px 15px;
+  }
+}
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .featured-tab-area .tabs li a {
+    font-size: 14px;
+    padding: 12px 16px 9px;
+  }
+  .featured-item .featured-item-img .featured-user {
+    top: 20px;
+  }
+  .featured-item .featured-item-img .featured-user .featured-user-option img {
+    margin-right: 7px;
+    width: 25px !important;
+    height: 25px !important;
+  }
+  .featured-item .featured-item-img .featured-user .featured-user-option span {
+    font-size: 13px;
+    padding-top: 2px;
+  }
+  .featured-item .featured-item-img .featured-item-clock {
+    font-size: 18px;
+  }
+  .featured-item .content {
+    padding: 20px 10px;
+  }
+  .featured-item .content h3 {
+    font-size: 19px;
+  }
+  .featured-item .content .content-in span {
+    font-size: 14px;
+  }
+  .featured-item .content .content-in h4 {
+    font-size: 14px;
+  }
+  .featured-item .content .featured-content-list {
+    padding: 12px 0 0;
+  }
+  .featured-item .content .featured-content-list p {
+    font-size: 14px;
+  }
+  .featured-item .content .featured-content-list p i {
+    font-size: 16px;
+  }
+}
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .featured-tab-area .tabs li {
+    margin-right: 5px;
+  }
+  .featured-tab-area .tabs li a {
+    font-size: 14px;
+    padding: 12px 16px 9px;
+  }
+  .featured-item .content h3 {
+    font-size: 16px;
+  }
+}
+@media only screen and (min-width: 5200px) and (max-width: 1299px) {
+  .featured-tab-area .tabs li a {
+    font-size: 14px;
+    padding: 12px 16px 9px;
+  }
+  .featured-item .content {
+    padding: 20px 20px;
+  }
+  .featured-item .content .content-in {
+    padding: 10px 5px 8px;
+  }
+  .featured-item .content h3 {
+    font-size: 18px;
+  }
+}
+
+.marginright{
+  letter-spacing: 2px;
+}
+
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration {
+  -webkit-appearance:none;
+}
+
+.navbar.bg-dark,
+.navbar.bg-vivid {
+  background-color: #2874f0 !important;
+}
+
+.default-btn {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #04AA6D;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #373737;
+}
+
+.default-btn:hover {background-color: #3e8e41}
+
+.default-btn:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(18px);
+}
+
+.navbar-dark .navbar-toggler {
+  color: rgba(255,255,255) !important;
+  background-color: #373737 !important;
+}
+
+.navbar-toggler .line{
+background-color: #fff !important;
+}
+
+
+
+
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<main>
+
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+         <a class="navbar-brand" href="#"><strong style="letter-spacing: 2px;">ElectroEdge</strong></a>
+         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+         </button>
+
+         <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+               <input class="form-control mr-sm-2" type="search" id="search_field"  placeholder="Search" aria-label="Search">
+            </form>
+            <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal"
+               data-target="#staticBackdrop">
+                <i class="fas fa-shopping-cart marginright total-count"></i>
+            </button>
+
+            <!-- <button style="margin-left:8px;" class="clear-cart btn btn-danger">Clear Cart</button>       -->
+            &nbsp;&nbsp;
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user"></i>
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="/user_login/"> &nbsp;&nbsp;Login</a></li>
+                  <li><a href="/user_logout/"> &nbsp;&nbsp;Logout</a></li>
+                </ul>
+              </div>
+           
+<!-- <a href="/user_login/" style="margin-left:8px;" class="clear-cart btn btn-warning"><i class="fa fa-user"></i></a>            -->
+           
+         </div>
+      </nav>
+      <section style="background-color: wheat;">
+         <div class="featured-area pt-100 pb-70">
+            <div class="container">
+               <div class="tab featured-tab-area">
+                  <div class="row justify-content-center">
+
+                  <div class="tab_content current active pt-45">
+                     
+                     <div>
+
+
+                     </div>
+
+                     <p id="not_found"></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Your Cart</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <table class="show-cart table">
+        
+                  </table>
+                  <div class="grand-total">Total price: ₹<span class="total-cart"></span></div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <!-- <button type="button" class="btn btn-danger clear-all">Clear All</button> -->
+                </div>
+            </div>
+         </div>
+      </div>
+   </main>
+  
+  <script src='https://code.jquery.com/jquery-3.6.3.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js'></script><script  src="./script.js"></script>
+  
+<script>
+    var shoppingCart = (function () {
+
+cart = [];
+
+function Item(name, price, count) {
+  this.name = name;
+  this.price = price;
+  this.count = count;
+}
+
+// Save cart
+function saveCart() {
+  localStorage.setItem('shoppingCart', JSON.stringify(cart));
+}
+
+// Load cart
+function loadCart() {
+  cart = JSON.parse(localStorage.getItem('shoppingCart'));
+}
+if (localStorage.getItem("shoppingCart") != null) {
+  loadCart();
+}
+
+
+var obj = {};
+
+// Add to cart
+obj.addItemToCart = function (name, price, count) {
+  for (var item in cart) {
+    if (cart[item].name === name) {
+      cart[item].count++;
+      saveCart();
+      return;
+    }
+  }
+  var item = new Item(name, price, count);
+  cart.push(item);
+  saveCart();
+}
+// Set count from item
+obj.setCountForItem = function (name, count) {
+  for (var i in cart) {
+    if (cart[i].name === name) {
+      cart[i].count = count;
+      break;
+    }
+  }
+};
+// Remove item from cart
+obj.removeItemFromCart = function (name) {
+  for (var item in cart) {
+    if (cart[item].name === name) {
+      cart[item].count--;
+      if (cart[item].count === 0) {
+        cart.splice(item, 1);
+      }
+      break;
+    }
+  }
+  saveCart();
+}
+
+// Remove all items from cart
+obj.removeItemFromCartAll = function (name) {
+  for (var item in cart) {
+    if (cart[item].name === name) {
+      cart.splice(item, 1);
+      break;
+    }
+  }
+  saveCart();
+}
+
+// Clear cart
+obj.clearCart = function () {
+  cart = [];
+  saveCart();
+}
+
+// Count cart 
+obj.totalCount = function () {
+  var totalCount = 0;
+  for (var item in cart) {
+    totalCount += cart[item].count;
+  }
+  return totalCount;
+}
+
+// Total cart
+obj.totalCart = function () {
+  var totalCart = 0;
+  for (var item in cart) {
+    totalCart += cart[item].price * cart[item].count;
+  }
+  return Number(totalCart.toFixed(2));
+}
+
+// List cart
+obj.listCart = function () {
+  var cartCopy = [];
+  for (i in cart) {
+    item = cart[i];
+    itemCopy = {};
+    for (p in item) {
+      itemCopy[p] = item[p];
+    }
+    itemCopy.total = Number(item.price * item.count).toFixed(2);
+    cartCopy.push(itemCopy)
+  }
+  return cartCopy;
+}
+return obj;
+})();
+
+
+// Add item
+$('.default-btn').click(function (event) {
+// alert('working');
+event.preventDefault();
+var name = $(this).data('name');
+var price = Number($(this).data('price'));
+shoppingCart.addItemToCart(name, price, 1);
+displayCart();
+});
+
+// Clear items
+$('.clear-cart').click(function () {
+shoppingCart.clearCart();
+displayCart();
+});
+
+
+function displayCart() {
+var cartArray = shoppingCart.listCart();
+var output = "";
+for (var i in cartArray) {
+  output += "<tr>"
+    + "<td>" + cartArray[i].name + "</td>"
+    + "<td>(" + cartArray[i].price + ")</td>"
+    + "<td><div class='input-group'>"
+    + "<input type='number' class='item-count form-control' data-name='" + cartArray[i].name + "' value='" + cartArray[i].count + "'>"
+    + "</div></td>"
+    + "<td><button class='delete-item btn btn-danger' data-name='" + cartArray[i].name + "'>X</button></td>"
+    + " = "
+    + "<td>" + cartArray[i].total + "</td>"
+    + "</tr>";
+}
+$('.show-cart').html(output);
+$('.total-cart').html(shoppingCart.totalCart());
+$('.total-count').html(shoppingCart.totalCount());
+}
+
+// Delete item button
+
+$('.show-cart').on("click", ".delete-item", function (event) {
+var name = $(this).data('name')
+shoppingCart.removeItemFromCartAll(name);
+displayCart();
+})
+
+// Item count input
+$('.show-cart').on("change", ".item-count", function (event) {
+var name = $(this).data('name');
+var count = Number($(this).val());
+shoppingCart.setCountForItem(name, count);
+displayCart();
+});
+displayCart();
+
+//////// ui script start /////////
+// Tabs Single Page
+$('.tab ul.tabs').addClass('active').find('> li:eq(0)').addClass('current');
+$('.tab ul.tabs li a').on('click', function (g) {
+var tab = $(this).closest('.tab'), 
+index = $(this).closest('li').index();
+tab.find('ul.tabs > li').removeClass('current');
+$(this).closest('li').addClass('current');
+tab.find('.tab_content').find('div.tabs_item').not('div.tabs_item:eq(' + index + ')').slideUp();
+tab.find('.tab_content').find('div.tabs_item:eq(' + index + ')').slideDown();
+g.preventDefault();
+});
+
+// search function
+$('#search_field').on('keyup', function() {
+var value = $(this).val();
+var patt = new RegExp(value, "i");
+
+$('.tab_content').find('.col-lg-3').each(function() {
+var $table = $(this);
+
+if (!($table.find('.featured-item').text().search(patt) >= 0)) {
+  $table.not('.featured-item').hide();
+}
+if (($table.find('.col-lg-3').text().search(patt) >= 0)) {
+  $(this).show();
+  
+document.getElementById("not_found").innerHTML = "";      
+  document.getElementById('not_found').style.display = 'none';
+} else {
+  document.getElementById("not_found").innerHTML = " No more Products found....";
+  document.getElementById('not_found').style.display = 'block';
+}
+
+});
+
+});
+</script>
+</body>
+</html>
