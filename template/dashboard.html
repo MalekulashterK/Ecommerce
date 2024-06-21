@@ -63,7 +63,7 @@ hr {
   align-items: center;
   justify-content: center;
   position: relative;
-  border-radius: 8px;
+  border-radius: 5px;
   z-index: 0;
   background: var(--pinkColor);
   overflow: hidden;
@@ -378,87 +378,138 @@ background-color: #fff !important;
 </head>
 <body>
 
-<main>
 
-      <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
-         <a class="navbar-brand" href="#"><strong style="letter-spacing: 2px;">ElectroEdge</strong></a>
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-         </button>
+  <main>
 
-         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-               <input class="form-control mr-sm-2" type="search" id="search_field"  placeholder="Search" aria-label="Search">
-            </form>
-            <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal"
-               data-target="#staticBackdrop">
-                <i class="fas fa-shopping-cart marginright total-count"></i>
-            </button>
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+       <a class="navbar-brand" href="#"><strong>Shopping Cart</strong></a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+       </button>
 
-            <!-- <button style="margin-left:8px;" class="clear-cart btn btn-danger">Clear Cart</button>       -->
-            &nbsp;&nbsp;
-            <div class="dropdown">
-                <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown"><i class="fa fa-user"></i>
-                <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                  <li><a href="/user_login/"> &nbsp;&nbsp;Login</a></li>
-                  <li><a href="/user_logout/"> &nbsp;&nbsp;Logout</a></li>
-                </ul>
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+             <input class="form-control mr-sm-2" type="search" id="search_field"  placeholder="Search" aria-label="Search">
+          </form>
+          <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal"
+             data-target="#staticBackdrop">
+              <i class="fas fa-shopping-cart marginright total-count"></i>
+          </button>
+
+          {% if urole == 'Admin' %}
+         &emsp; <a class="navbar-brand" href="/admin_panel/">Admin Panel</a>
+
+          {% endif %}
+         
+          <button style="margin-left:8px;" class="clear-cart btn btn-danger">Clear Cart</button>     
+          
+
+         
+       </div>
+    </nav>
+    <section>
+       <div class="featured-area pt-100 pb-70">
+          <div class="container">
+             <div class="tab featured-tab-area">
+                <div class="row justify-content-center">
+
+                   <!-- <div class="col-lg-4 col-md-8">
+                      <ul class="tabs active">
+                         <li class="">
+                            <a href="#">
+                               All
+                            </a>
+                         </li>
+                         <li class="">
+                            <a href="#">
+                               Men
+                            </a>
+                         </li>
+                         <li class="">
+                            <a href="#">
+                               Women
+                            </a>
+                         </li>
+                         <li class="">
+                            <a href="#">
+                               Watch
+                            </a>
+                         </li>
+                      </ul>
+                   </div> -->
+                </div>
+                <div class="tab_content current active pt-45">
+                   
+                   <div class="tabs_item current">
+                      <div class="row justify-content-left">
+                        {% for pdt in pdata %}
+                         <div class="col-lg-3 col-md-6">
+                            <div class="featured-item">
+                               <div class="featured-item-img">
+                                  <a href="#">
+                                     <img src="{{pdt.image.url}}" alt="Images" style="height: 220px; width:270px">
+                                  </a>
+                               </div>
+                               <div class="content">
+                                  <h5><a href="#" style="color: #000000; font-weight: bold;">{{pdt.pname}}</a></h5>
+                                  <hr>
+                                  <div class="content-in">
+                                     <h4 style="font-weight: bold;">${{pdt.price}} </h4>
+                                  </div>
+                                  <hr>
+                                  <div class="featured-content-list">
+                                     <button type="button" data-name="{{pdt.pname}}" data-price="{{pdt.price}}" class="default-btn border-radius-3" style="font-size: 13px; padding:10px"> <i class="fas fa-shopping-cart marginright"></i> Add to cart</button>
+                                  </div>
+                               </div>
+                            </div>
+                         </div>
+                         {% endfor %}
+    
+
+
+     
+                      </div>
+                   </div>
+
+
+                 
+
+                   <p id="not_found"></p>
+                </div>
+             </div>
+          </div>
+       </div>
+    </section>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+       aria-labelledby="staticBackdropLabel" aria-hidden="true">
+       <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content">
+             <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Your Cart</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                   <span aria-hidden="true">&times;</span>
+                </button>
+             </div>
+             <div class="modal-body">
+                <table class="show-cart table">
+      
+                </table>
+                <div class="grand-total">Total price: ₹<span class="total-cart"></span></div>
               </div>
-           
-<!-- <a href="/user_login/" style="margin-left:8px;" class="clear-cart btn btn-warning"><i class="fa fa-user"></i></a>            -->
-           
-         </div>
-      </nav>
-      <section style="background-color: wheat;">
-         <div class="featured-area pt-100 pb-70">
-            <div class="container">
-               <div class="tab featured-tab-area">
-                  <div class="row justify-content-center">
-
-                  <div class="tab_content current active pt-45">
-                     
-                     <div>
-
-
-                     </div>
-
-                     <p id="not_found"></p>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-
-
-      <!-- Modal -->
-      <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
-         aria-labelledby="staticBackdropLabel" aria-hidden="true">
-         <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-               <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">Your Cart</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true">&times;</span>
-                  </button>
-               </div>
-               <div class="modal-body">
-                  <table class="show-cart table">
-        
-                  </table>
-                  <div class="grand-total">Total price: ₹<span class="total-cart"></span></div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <!-- <button type="button" class="btn btn-danger clear-all">Clear All</button> -->
-                </div>
-            </div>
-         </div>
-      </div>
-   </main>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-danger clear-all">Clear All</button> -->
+              </div>
+          </div>
+       </div>
+    </div>
+ </main>
   
   <script src='https://code.jquery.com/jquery-3.6.3.js'></script>
 <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js'></script>

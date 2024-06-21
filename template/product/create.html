@@ -1,0 +1,1126 @@
+{% extends 'master.html' %}
+{% block content %}
+
+
+
+<style>
+  /* width */
+  ::-webkit-scrollbar {
+  width: 1px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+  }
+   
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+  background: #888; 
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+  }
+</style>
+
+<style>
+  /* Add a class to the sticky header */
+  .sticky-thead th {
+      position: sticky;
+      top: 0;
+      background-color: #142d4c;
+      color: black;
+      z-index: 100; /* Ensure it's above the other content */
+  }
+
+  table.tab {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+  }
+
+  td.tab,
+  th.tab {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+  }
+
+  tr:nth-child(even) {
+      background-color: #dddddd;
+  }
+</style>
+
+<style>
+  .stickydiv{
+    position: sticky;
+    top: -1px;
+    /* background: rgb(77, 76, 76); */
+    z-index: 50;
+  }
+
+</style>
+
+
+<section>
+  <div class="card">
+    <div class="card-header">
+
+
+      <div class="row" >
+        <div class="col-md-8">
+          <h4>Multiple Referencing&nbsp;
+          <a href="#" role="button" data-toggle="modal" data-target="#show_ref_format" style="color:white">
+            <i class="fa fa-info-circle" style="color: black;font-size: 20px;"></i>
+          </a>
+
+          <div class="modal fade" id="show_ref_format" tabindex="-1" role="dialog" aria-labelledby="editmodalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-slideout modal-md" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="editmodalLabel" style="text-align: left;">Reference Format
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="font-size: 28px;">×</span>
+                  </button>
+                  </h4>
+                </div>
+                <div class="modal-body" style="font-size: 12px;">
+                  <label><u style="color: black;font-size: 16px;font-weight: bold;">Instructions:</u></label><br>
+
+                
+
+                  <label style="color: blue;text-align: justify;"><i class="fa fa-info-circle" style="color: ce2b2b;font-size: 11px;"></i>
+                    Please Note: You can add *** and ### as per your requirement where you want to add citation.*** is the starting of the citation and ### is the end of the citation as mentioned below. Please select paragraphs greater than 40 words (Minimum word count) for citation.</label>
+                  <br> 
+
+                  <label style="color: #ce2b2b;text-align: justify;"><i class="fa fa-info-circle" style="color: ce2b2b;font-size: 11px;"></i>
+                    Please Note: For APA referencing, the reference list is not in hanging format. Please do it manually after the referencing is done.</label>
+                  <br>
+
+                  <label style="color: #ce2b2b;text-align: justify;"><i class="fa fa-info-circle" style="color: ce2b2b;font-size: 11px;"></i>
+                    Please Note: For Chicago referencing, the word file is not formatted with footnote. Please do it manually after the referencing is done.</label>
+                  <br> 
+                  <img src="/mediaa/reference_format/mention_citation.JPG" width="480px">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </h4>
+        </div>
+        <div class="col-md-4 text-right">
+          <a href="/job/auto_reference_index" class="btn btn-info btn-sm" style="color: white;">Go Back</a>
+          <a href="/job/reference_details_index/" target="_blank" class="btn btn-info btn-sm" style="color: white;">Reference Patterns</a>
+
+        </div>
+
+      </div>
+
+      <label style="color: #ce2b2b;text-align: justify;"><i class="fa fa-info-circle" style="color: ce2b2b;font-size: 13px;"></i>
+        Please Note: You have to change the Sub-Subject to get the different references.</label>
+
+
+      </div>
+
+      <div class="card-body">
+        <form id="my_form" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            <input type="hidden" class="form-control" id="job_id" value="NA" readonly style="background-color: transparent;">
+
+            <div class="col-md-6">
+              <div  class='form-group'>
+              <label style="font-weight: bold;">Portal Name<span style="color: #ce2b2b;">*</span></label>
+                <select id="portal" class="form-control select2" name="portal" style="width: 100%" required>
+                  <option value="" selected disabled>---Select Please---</option>    
+                  <option value="PEPEX">PEPEX</option>
+                  <option value="AOC">AOC</option>
+                  <option value="STUN">STUN</option>
+                  <option value="MPG">MPG</option>
+                  <option value="SSD">SSD</option>
+                  <option value="WPS">WPS</option>
+                  <option value="GST">GST</option>
+                  <option value="PAT">PAT</option>
+                  <option value="SEC">SEC</option>
+                  <option value="DIGIREACH">DIGIREACH</option>
+              </select>
+              </div>
+          </div>
+
+          <div class="col-md-6">
+            <div  class='form-group'>
+            <label style="font-weight: bold;">Job Id<span style="color: #ce2b2b;">*</span></label>
+              <input type="text" class="form-control" name="jobid" required>
+            </div>
+        </div>
+
+
+
+            <div class="col-md-6">
+              <input type="hidden" class="form-control" id="selected_journal1" name="final_journals" readonly>
+              <input type="hidden" class="form-control" id="selected_book1" name="final_books" readonly>
+              <input type="hidden" class="form-control" id="selected_subjects" name="final_subjects" readonly>
+              <input type="hidden" class="form-control" id="selection_data" name="selection_data" readonly>
+              
+
+
+              
+              <div  class='form-group'>
+                <label style="font-weight: bold;">Reference Type (1)<span style="color:red">*</span></label><br>
+                <select id="ref_type" class="form-control select2" name="ref_type" style="width: 100%" required onchange="select_ref(this.value)">
+                    <option value="" selected disabled>---Select Please---</option>    
+                    <option value="Harvard">Harvard</option>
+                    <option value="APA">APA</option>
+                    <option value="MLA">MLA</option>
+                    <option value="Vancouver">Vancouver</option>
+                    {% if user.id == 9 %}
+                        <option value="Chicago">Chicago</option>
+                    {% endif %}
+                </select>
+              </div>
+
+
+          </div>
+
+        <div class="col-md-6">
+  
+
+          <div  class='form-group' id="reference_show">
+            <label style="font-weight: bold;">Sub Subject (2)<span style="color: #ce2b2b;">*</span></label>
+                <select id="subject" class="form-control select2" style="width: 100%;" name="subject" required onchange="select_subsubject(this.value)">
+                  <option value="" selected disabled>---Select Please---</option>
+                  {% for ud in sub_subject_val %}
+                  <option>{{ud.sub_subject}}</option>
+                  {% endfor %}
+              </select>
+
+
+            </div>
+
+
+        </div>
+        <div class="col-md-6">
+
+          <div id="input_file_show" class='form-group'>
+            <label style="font-weight: bold;">File (3)<span style="color:red">*</span></label>
+            <input type="file" name="input_file" class="form-control" accept=".docx" required>
+          </div>
+
+      </div>
+
+      <div class="col-md-6">
+
+        <div id="title_show" class='form-group'>
+          <label style="font-weight: bold;">Title (4)</label>
+          <input id="title" type="text" name="title" class="form-control" oninput="check_title_words(this.value)">
+        </div>
+
+    </div>
+        
+
+
+            
+            <div class="col-md-6" id="ref_detail" style="display: none;">
+              <label style="font-weight: bold;">Available References</label>
+              <br>
+              <div class='form-group' style="display: block;width: 100%;padding: 0.375rem 0.75rem;font-size: 1rem;line-height: 1.5;color: #444;background-color: #fff;background-clip: padding-box;border: 1px solid #ced4da;border-radius: 0.25rem;">
+                <label id="total" style="font-size: 13px;"></label>&nbsp;&nbsp;
+                <label id="journal" style="font-size: 13px;"></label>&nbsp;&nbsp;
+                <label id="book" style="font-size: 13px;"></label>
+
+              </div>
+
+          </div>
+
+          <div class="col-md-6" style="display: none;" id="table_div">
+            <label style="font-weight: bold;">Selected Subjcet, Journal & Book Details</label>
+            <table id="table_display" style="width: 100%;zoom:90%" class="table table-bordered table-striped">
+              <thead style="background-color: #142d4c;">
+                <tr style="background-color: #142d4c;">
+                  <th style="text-align: center;">SL No.</th>
+                  <th style="text-align: center;">Sub Subject</th>
+                  <th style="text-align: center;">No. of Journal</th>
+                  <th style="text-align: center;">No. of Book</th>
+                </tr>
+              </thead>
+              <tbody style="color: black;">
+
+              </tbody>
+            </table>
+          </div>
+
+
+         
+
+          
+
+
+          </div>
+
+
+          <div class="row" id="count_detail" style="display: none;" hidden>
+            <div class="col-md-6" >
+
+                <div class='form-group'>
+                    <br>
+    
+                    <div class="row">
+                        <div class="col-md-7">
+                            <b>Sub Subject&nbsp;<input type="text" class="form-control" id="selected_subject" readonly style="display: block;width: 100%;padding: 0.375rem 0.75rem;font-size: 1rem;line-height: 1.5;color: #444;background-color: #fff;background-clip: padding-box;border: 1px solid #ced4da;border-radius: 0.25rem;"></b>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Journals&nbsp;<input type="text" class="form-control" id="selected_journal_count" readonly style="display: block;width: 100%;padding: 0.375rem 0.75rem;font-size: 1rem;line-height: 1.5;color: #444;background-color: #fff;background-clip: padding-box;border: 1px solid #ced4da;border-radius: 0.25rem;"></b>
+                        </div>
+                        <div class="col-md-2">
+                            <b>Books&nbsp;</b><input type="text" class="form-control" id="selected_book_count" readonly style="display: block;width: 100%;padding: 0.375rem 0.75rem;font-size: 1rem;line-height: 1.5;color: #444;background-color: #fff;background-clip: padding-box;border: 1px solid #ced4da;border-radius: 0.25rem;">
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+          </div>
+          
+
+
+          <div id="ref_show" style="display: none;">
+            
+
+          <div class="row" >
+
+            
+
+
+
+            <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header" style="background-color: #142d4c;color: aliceblue;">
+              
+                    <div class="row">
+                      <div class="col-md-8">
+                        <label style="font-size: 14px;color: aliceblue;">Journals</label>
+                      </div>
+                      <div id="selectedCount_journal" class="col-md-4 text-right" style="font-size: 14px;">
+                        Selected: 0
+                        
+                      </div>
+
+                    </div>
+              
+                    </div>
+                      <div class="card-body" id="loader" style="display: none;font-size: 30px;text-align: center;"><i class="fas fa-spinner fa-spin" style="font-size: 30px;text-align: center;"></i></div>
+              
+                            <div class="card-body" id="ref_list" style="overflow-x: scroll;max-height: 400px; text-align: justify;">
+    
+                          </div>
+                  </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header" style="background-color: #142d4c;color: aliceblue;">
+              
+                    <div class="row">
+                      <div class="col-md-8">
+                        <label style="font-size: 14px;color: aliceblue;">Books</label>
+                      </div>
+                      <div id="selectedCount_book" class="col-md-4 text-right" style="font-size: 14px;">
+                        Selected: 0
+                        
+                      </div>
+                    </div>
+              
+                    </div>
+                    <div class="card-body" id="loader1" style="display: none;font-size: 30px;text-align: center;"><i class="fas fa-spinner fa-spin" style="font-size: 30px;text-align: center;"></i></div>
+              
+                            <div class="card-body" id="ref_list1" style="overflow-x: scroll;max-height: 400px; text-align: justify;">
+    
+                          </div>
+                  </div>
+            </div>
+
+          </div>
+        </div>
+        <br>
+          <div class="form-group text-center" id="sbmt">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+
+          <div class="form-group text-center" id="ref_dt" style="display:none">
+            <h4 style="color: red;text-align: center; font-weight:bold; font-family:'Times New Roman', Times, serif">!! No Reference Found !!</h4>
+            
+            
+            
+            <button class="btn btn-success" onclick="add_reference()">Add Reference</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    {% for message in messages %}
+
+    {% if 'success' == message.tags %}
+            <script type="text/javascript">
+              // Default Configuration
+                  $(document).ready(function() {
+                      toastr.options = {
+                          'closeButton': true,
+                          'debug': false,
+                          'newestOnTop': false,
+                          'progressBar': true,
+                          'positionClass': 'toast-top-right',
+                          'preventDuplicates': false,
+                          'showDuration': '1000',
+                          'hideDuration': '1000',
+                          'timeOut': '3000',
+                          'extendedTimeOut': '1000',
+                          'showEasing': 'swing',
+                          'hideEasing': 'linear',
+                          'showMethod': 'fadeIn',
+                          'hideMethod': 'fadeOut',
+                      }
+                  });
+          
+              // Toast Type
+               
+                      toastr.success('Data Submitted Successfully');
+                 
+              // Toast Image and Progress Bar
+                  $('#image').click(function(event) {
+                      toastr.options.progressBar = true,
+                      toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+                  });
+          
+          
+              // Toast Position
+                  $('#position').click(function(event) {
+                      var pos = $('input[name=position]:checked', '#positionForm').val();
+                      toastr.options.positionClass = "toast-" + pos;
+                      toastr.options.preventDuplicates = false;
+                      toastr.info('This sample position', 'Toast Position')
+                  });
+              </script>
+    
+            {% elif 'error' == message.tags %}
+            <script type="text/javascript">
+              // Default Configuration
+                  $(document).ready(function() {
+                      toastr.options = {
+                          'closeButton': true,
+                          'debug': false,
+                          'newestOnTop': false,
+                          'progressBar': false,
+                          'positionClass': 'toast-top-right',
+                          'preventDuplicates': false,
+                          'showDuration': '1000',
+                          'hideDuration': '1000',
+                          'timeOut': '5000',
+                          'extendedTimeOut': '1000',
+                          'showEasing': 'swing',
+                          'hideEasing': 'linear',
+                          'showMethod': 'fadeIn',
+                          'hideMethod': 'fadeOut',
+                      }
+                  });
+          
+              // Toast Type
+               
+                      toastr.error('Data Deleted Successfully');
+                 
+              // Toast Image and Progress Bar
+                  $('#image').click(function(event) {
+                      toastr.options.progressBar = true,
+                      toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+                  });
+          
+          
+              // Toast Position
+                  $('#position').click(function(event) {
+                      var pos = $('input[name=position]:checked', '#positionForm').val();
+                      toastr.options.positionClass = "toast-" + pos;
+                      toastr.options.preventDuplicates = false;
+                      toastr.info('This sample position', 'Toast Position')
+                  });
+              </script>
+              
+             {% elif 'info' == message.tags %}
+    
+            <script type="text/javascript">
+              // Default Configuration
+                  $(document).ready(function() {
+                      toastr.options = {
+                          'closeButton': true,
+                          'debug': false,
+                          'newestOnTop': false,
+                          'progressBar': false,
+                          'positionClass': 'toast-top-right',
+                          'preventDuplicates': false,
+                          'showDuration': '1000',
+                          'hideDuration': '1000',
+                          'timeOut': '5000',
+                          'extendedTimeOut': '1000',
+                          'showEasing': 'swing',
+                          'hideEasing': 'linear',
+                          'showMethod': 'fadeIn',
+                          'hideMethod': 'fadeOut',
+                      }
+                  });
+          
+              // Toast Type
+               
+                      toastr.info('Already Another Job is allocated the person wihtin the time period');
+                 
+              // Toast Image and Progress Bar
+                  $('#image').click(function(event) {
+                      toastr.options.progressBar = true,
+                      toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+                  });
+          
+          
+              // Toast Position
+                  $('#position').click(function(event) {
+                      var pos = $('input[name=position]:checked', '#positionForm').val();
+                      toastr.options.positionClass = "toast-" + pos;
+                      toastr.options.preventDuplicates = false;
+                      toastr.info('This sample position', 'Toast Position')
+                  });
+              </script>
+    
+              {% elif 'warning' == message.tags %}
+              <script type="text/javascript">
+                // Default Configuration
+                    $(document).ready(function() {
+                        toastr.options = {
+                            'closeButton': true,
+                            'debug': false,
+                            'newestOnTop': false,
+                            'progressBar': false,
+                            'positionClass': 'toast-top-right',
+                            'preventDuplicates': false,
+                            'showDuration': '1000',
+                            'hideDuration': '1000',
+                            'timeOut': '5000',
+                            'extendedTimeOut': '1000',
+                            'showEasing': 'swing',
+                            'hideEasing': 'linear',
+                            'showMethod': 'fadeIn',
+                            'hideMethod': 'fadeOut',
+                        }
+                    });
+            
+                // Toast Type
+                 
+                        toastr.error('No Journal and Book Selected');
+                   
+                // Toast Image and Progress Bar
+                    $('#image').click(function(event) {
+                        toastr.options.progressBar = true,
+                        toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+                    });
+            
+            
+                // Toast Position
+                    $('#position').click(function(event) {
+                        var pos = $('input[name=position]:centerhecked', '#positionForm').val();
+                        toastr.options.positionClass = "toast-" + pos;
+                        toastr.options.preventDuplicates = false;
+                        toastr.info('This sample position', 'Toast Position')
+                    });
+                </script>
+            {% else %}
+            
+            {% endif %}
+      
+            {% endfor %}
+
+</section>
+<br>
+
+{% if output_file != 'None' %}
+<section>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header" style="background-color: #142d4c;color: aliceblue;">
+    
+          <div class="row">
+            <div class="col-md-8">
+              <label style="font-size: 14px;color: aliceblue;">Referencing Details</label>
+            </div>
+            <div class="col-md-4 text-right">
+              <a href="/mediaa/breakpath_reference/{{ output_file }}" class="btn btn-warning" style="color:black;font-size: 12px;font-weight: bold;">
+                Download                     
+              </a>
+            </div>
+          </div>
+    
+          </div>
+    
+          <div class="card-body" style="height: 320px; overflow:scroll;">
+              <div class="row">
+                <div class="col-md-12">
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Portal:</b> &nbsp;{{ portal }}<br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Job Id:</b> &nbsp;{{ job_id }}<br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Sub Subject:</b> &nbsp;
+                      {% for s in subject  %}
+                        {{  s }},
+                      {% endfor %}
+                      <br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Main File Words:</b> &nbsp;{{ words }}<br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Reference Type:</b> &nbsp;{{ ref_type }}<br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Journal:</b> &nbsp;{{ journal_count }}<br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Book:</b> &nbsp;{{ book_count }}<br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Title:</b> &nbsp;{{ title_display }}<br><br>
+                    <i class="fa fa-angle-double-right" style="font-size: 14px;text-align: right;font-weight: bold;"></i>
+                    &nbsp;<b>Selcetd Sub subject, Journal & Book Details:</b> <br>
+
+                    <table style="width: 100%;zoom:90%" class="table table-bordered table-striped">
+                      <thead style="background-color: #142d4c;">
+                        <tr style="background-color: #142d4c;">
+                          <th style="text-align: center;">Sub Subject</th>
+                          <th style="text-align: center;">No. of Journal</th>
+                          <th style="text-align: center;">No. of Book</th>
+                        </tr>
+                      </thead>
+                      <tbody style="color: black;">
+                        {% for f in final_selection_data %}
+                        <tr>
+                          <td style="text-align: center;">{{ f.subject }}</td>
+                          <td style="text-align: center;">{{ f.journalCount }}</td>
+                          <td style="text-align: center;">{{ f.bookCount }}</td>  
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                          <td style="text-align: center;font-weight:bold">TOTAL</td>
+                          <td style="text-align: center;font-weight:bold">{{ totalJournalCount }}</td>
+                          <td style="text-align: center;font-weight:bold">{{ totalBookCount }}</td>  
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+
+              </div>
+          </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header" style="background-color: #142d4c;color: aliceblue;">
+          <div class="row">
+            <div class="col-md-4">
+              <label style="font-size: 14px;color: aliceblue;">Reference List</label>
+            </div>
+          </div>
+            <div class="col-md-4"></div>
+          </div>
+          <div class="card-body" style="overflow-y: scroll;overflow-x:hidden;height:auto;max-height: 320px; word-break:break-all">
+              <div class="row">
+                  <div class="card-body">
+                    <b style="font-size: 14px;">Journals</b><br>
+                    {% for j in journal_link_list %}
+                    {{ forloop.counter }}.&nbsp;{{ j.journal_name }}<br>
+                    <label style="font-size: 14px;">Link:</label>&nbsp;<a href="{{ j.journal_link}}" target="_blank" style="word-wrap: break-word;">{{ j.journal_link}}</a><br><br>
+                    {% endfor %}
+                    <br><br>
+                    <b style="font-size: 14px;">Books</b><br>
+                    {% for b in book_link_list %}
+                    {{ forloop.counter }}.&nbsp;{{ b.book_name }}<br>
+                    <label style="font-size: 14px;">Link:</label>&nbsp;<a href="{{ b.book_link}}" target="_blank" style="word-wrap: break-word;">{{ b.book_link}}</a><br><br>
+                    {% endfor %} 
+                  </div>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+
+
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" style="background-color: #142d4c;color: aliceblue;">
+    
+          <div class="row">
+            <div class="col-md-8">
+              <label style="font-size: 14px;color: aliceblue;">Content (With Reference) ({{ cited_words }} Words)</label>
+            </div>
+          </div>
+    
+          </div>
+    
+          <div class="card-body" style="max-height: 420px;text-align: justify;overflow-y: scroll;">
+
+            {% for fc in final_content1 %}
+              {{ fc }}<br><br>
+            {% endfor %}
+          </div>
+        </div>
+    </div>
+
+  </div>
+
+  <br>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" style="background-color: #142d4c;color: aliceblue;">
+    
+          <div class="row">
+            <div class="col-md-8">
+              <label style="font-size: 14px;color: aliceblue;">Referencing Report</label>
+            </div>
+          </div>
+    
+          </div>
+    
+          <div class="card-body" >
+
+            <div class="card">
+              <div class="card-body">
+
+                <table class="table table-bordered" style="border-color: #142d4c;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;font-size:14px;font-weight: bold;color: black;">Total: {{ total_cit }}</th>
+                      <th style="text-align: center;font-size:14px;font-weight: bold;color: rgb(28, 172, 28);">Used: {{ use_cit }} ({{ cit_word }} Words)</th>
+                      <th style="text-align: center;font-size:14px;font-weight: bold;color: red;">Remain: {{ remain_cit }}</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+            
+
+            <br>
+            
+            <table id="example" class="display" style="width:100%">
+              <thead>
+                  <tr>
+                      <th style="text-align:center;">SL No.</th>
+                      <th style="text-align:center;">Citation</th>
+                      <th style="text-align:center;">Frequency</th>
+                      <th style="text-align:center;">Total Words (After Referencing)</th>
+
+                  </tr>
+              </thead>
+              <tbody style="text-align: center;color: black;">
+                  {% for i in ref_report %}
+                      <tr>
+                        <td style="text-align:center;">{{ forloop.counter }}</td>
+                        <td style="text-align:center;">{{ i.citation }}</td>
+                        <td style="text-align:center;">{{ i.frequency }}</td>
+                        <td style="text-align:center;">{{ i.intext_word }}</td>
+                      </tr>
+                  {% endfor %}
+                 
+              </tbody>
+          </table>
+
+
+          </div>
+        </div>
+    </div>
+
+  </div>
+  <br>
+  
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" style="background-color: #142d4c;color: aliceblue;">
+    
+          <div class="row">
+            <div class="col-md-8">
+              <label style="font-size: 14px;color: aliceblue;">Paragraph With Word Count (After Referencing)</label>
+            </div>
+          </div>
+    
+          </div>
+    
+          <div class="card-body" >
+
+            <div class="card">
+              <div class="card-body">
+
+                <table class="table table-bordered" style="border-color: #142d4c;">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;font-size:14px;font-weight: bold;color: black;">Total: {{ cited_words }}</th>
+                      <th style="text-align: center;font-size:14px;font-weight: bold;color: green;">Without Heading: {{ para_word_count_show }}</th>
+                      <th style="text-align: center;font-size:14px;font-weight: bold;color: red;">Heading: {{ para_word_count_show1 }}</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+         
+
+            <br>
+            <table id="example1" class="display" style="width:100%">
+              <thead class="stickydiv">
+                  <tr style="background-color: rgb(2, 44, 28);">
+                      <th style="text-align:center; background-color: #142d4c; color:white;">Type</th>
+                      <th style="text-align:left; background-color: #142d4c; color:white;">Content</th>
+                      <th style="text-align:center; background-color: #142d4c; color:white;max-width:180px">Words</th>
+
+                  </tr>
+              </thead>
+              <tbody style="text-align: center;">
+                  {% for p in para_word_count %}
+                      <tr>
+                        <td style="text-align:center;">
+
+                          {% if p.cat == 'Heading' %}
+
+                            <b style="color: red;">{{ p.cat }}</b>
+
+                          {% else %}
+                            <b style="color: green;">{{ p.cat }}</b>
+
+                          {% endif %}
+                       
+                        </td>
+                        <td style="text-align:justify;">{{ p.para }}</td>
+                        <td style="text-align:center;max-width:180px"><b>{{ p.word_count }}</b></td>
+                      </tr>
+                  {% endfor %}
+                 
+              </tbody>
+          </table>
+
+
+          </div>
+        </div>
+    </div>
+
+  </div>
+  
+
+
+  
+  </section>
+
+  {% endif %}
+
+  <script>
+      $('.select2').select2();
+  </script>
+        
+        <script>
+            var selectedValues = [];
+            var selectedBooks = []; 
+            var selectedSubjectsData = [];    
+            var selectedSubjects = [];
+
+            
+            function updateSelectedCount_journal() {
+              var checkboxes = document.getElementsByName('selected_journal');
+              var selectedCount = 0;
+          
+              for (var i = 0; i < checkboxes.length; i++) {
+                  if (checkboxes[i].checked) {
+                      if (!selectedValues.includes(checkboxes[i].value)) {
+                          selectedValues.push(checkboxes[i].value);
+                      }
+                      selectedCount++;
+                  } 
+              }
+
+              document.getElementById("selected_journal1").value = JSON.stringify(selectedValues);
+              document.getElementById('selectedCount_journal').innerText = 'Selected: ' + selectedCount;
+              document.getElementById("selected_journal_count").value = selectedCount;
+
+              updateSelectedSubjectsData(selectedCount, 'journal');
+          }
+          
+
+          function updateSelectedCount_book() {
+            var checkboxes = document.getElementsByName('selected_book');
+            var selectedCount1 = 0;
+        
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked) {
+                    if (!selectedBooks.includes(checkboxes[i].value)) {
+                        selectedBooks.push(checkboxes[i].value);
+                    }
+                    selectedCount1++;
+                } 
+            }
+        
+            document.getElementById("selected_book1").value = JSON.stringify(selectedBooks);
+            document.getElementById('selectedCount_book').innerText = 'Selected: ' + selectedCount1;
+            document.getElementById("selected_book_count").value = selectedCount1;
+
+            updateSelectedSubjectsData(selectedCount1, 'book');
+        }
+
+        function updateSelectedSubjectsData(selectedCount, type)
+        {
+          var selectedSubject = document.getElementById("selected_subject").value;
+          var subjectData = selectedSubjectsData.find(data => data.subject === selectedSubject);
+
+          if (subjectData) 
+          {
+              if (type === 'journal') 
+              {
+                subjectData.journalCount = selectedCount;
+              } 
+              else if (type === 'book') 
+              {
+                subjectData.bookCount = selectedCount;
+              }
+          } 
+          else 
+          {
+              if (selectedSubject !='')
+              {
+
+                selectedSubjects.push(selectedSubject);
+
+                selectedSubjectsData.push({
+                  subject: selectedSubject,
+                  journalCount: type === 'journal' ? selectedCount : 0,
+                  bookCount: type === 'book' ? selectedCount : 0
+              });
+              }
+
+          }
+
+          document.getElementById("selected_subjects").value = JSON.stringify(selectedSubjects);
+          document.getElementById("selection_data").value = JSON.stringify(selectedSubjectsData);
+
+
+          $('#table_display').find("tr:gt(0)").remove(); 
+          rowNumber = 1;
+          var totalJournalCount = 0;
+          var totalBookCount = 0;
+          selectedSubjectsData.forEach(function (item)
+          {  
+            var newRow = $("<tr>");
+              newRow.append("<td style='vertical-align:middle;text-align:center'>" + rowNumber  + "</td>");
+              newRow.append("<td style='vertical-align:middle;text-align:center'>" + item.subject + "</td>");
+              newRow.append("<td style='vertical-align:middle;text-align:center'>" + item.journalCount + "</td>");
+              newRow.append("<td style='vertical-align:middle;text-align:center'>" + item.bookCount + "</td>");
+              ++rowNumber;
+              $("#table_display").append(newRow);
+
+              // Update totals
+              totalJournalCount += item.journalCount;
+              totalBookCount += item.bookCount;
+              
+            }); 
+            
+            var totalRow = $("<tr>");
+            totalRow.append("<td style='vertical-align:middle;text-align:center'><b>TOTAL</b></td>");
+            totalRow.append("<td style='vertical-align:middle;text-align:center'><b>---</b></td>");
+            totalRow.append("<td style='vertical-align:middle;text-align:center'><b>" + totalJournalCount + "</b></td>");
+            totalRow.append("<td style='vertical-align:middle;text-align:center'><b>" + totalBookCount + "</b></td>");
+
+            $("#table_display").append(totalRow);
+        }
+        
+        window.load =  document.getElementById('title_show').style.display = 'none';
+        window.load =  document.getElementById('input_file_show').style.display = 'none';
+        window.load =  document.getElementById('sbmt').style.display = 'none';
+
+
+
+            function select_subsubject(a)
+            {
+
+              if (a != '')
+              {
+                document.getElementById('title_show').style.display = 'block';
+                document.getElementById('input_file_show').style.display = 'block';
+                document.getElementById('sbmt').style.display = 'block';
+                
+              }
+              else
+              {
+                document.getElementById('title_show').style.display = 'none';
+                document.getElementById('input_file_show').style.display = 'none';
+                document.getElementById('sbmt').style.display = 'none';
+
+              }
+              
+
+              document.getElementById("selected_journal_count").value = 0;
+              document.getElementById("selected_book_count").value = 0;
+
+
+              document.getElementById("selectedCount_journal").innerText = 'Selected: 0';
+              document.getElementById("selectedCount_book").innerText = 'Selected: 0';
+
+              document.getElementById('count_detail').style.display = 'block';
+
+       
+              
+
+
+
+              subject = a;
+              job_id = document.getElementById('job_id').value;
+
+              reference_type = document.getElementById('ref_type').value;
+              document.getElementById("selected_subject").value = subject;
+
+              
+              var outputDiv = document.getElementById('ref_list');
+              var outputDiv1 = document.getElementById('ref_list1');
+              outputDiv.innerHTML = '';
+              outputDiv1.innerHTML = '';
+              $('#loader').show();
+              $('#loader1').show();
+
+
+              $.ajax({
+                    url: "{% url 'check_ref_data' %}",
+                    data: {'id1': subject, 'id2':reference_type, 'id3':job_id},
+                    success: function(response)
+                    {
+                      $('#loader').hide();
+                      $('#loader1').hide();
+
+
+                      if(response.ref_count == 0)
+                      {
+                        document.getElementById('sbmt').style.display='none';
+                        document.getElementById('ref_dt').style.display='block';  
+                        document.getElementById('ref_detail').style.display='none';
+                        document.getElementById('table_div').style.display='none';
+
+
+                      }
+                      else
+                      {
+                        document.getElementById('sbmt').style.display='block';
+                        document.getElementById('ref_dt').style.display='none'; 
+                        document.getElementById('ref_detail').style.display='block';        
+                        document.getElementById('table_div').style.display='block';        
+
+                                      
+                        document.getElementById('total').innerHTML = 'Total: '+response.ref_count;                        
+                        document.getElementById('journal').innerHTML = 'Journal: '+response.ref_journal_count;                        
+                        document.getElementById('book').innerHTML = 'Books: '+response.ref_books_count;
+
+                        document.getElementById('ref_show').style.display='block'; 
+
+                        for (var i = 0; i < response.reference_list.length; i++) {
+                          var checkbox = document.createElement('input');
+                          checkbox.type = 'checkbox';
+                          checkbox.name = 'selected_journal';  
+                          checkbox.value = response.reference_list[i]['ref'];
+                          checkbox.addEventListener('change', updateSelectedCount_journal); 
+                          var label = document.createElement('span');
+                          label.textContent = response.reference_list[i]['ref'];
+                          outputDiv.appendChild(checkbox);
+                          outputDiv.appendChild(document.createTextNode('\u00A0'));
+                          outputDiv.appendChild(label);
+                          outputDiv.appendChild(document.createElement('br'));
+                          outputDiv.appendChild(document.createElement('br'));
+                        }
+
+                        for (var i = 0; i < response.reference_list_book.length; i++) {
+                          var checkbox = document.createElement('input');
+                          checkbox.type = 'checkbox';
+                          checkbox.name = 'selected_book';  
+                          checkbox.value = response.reference_list_book[i]['ref'];
+                          checkbox.addEventListener('change', updateSelectedCount_book); 
+                          var label = document.createElement('span');
+                          label.textContent = response.reference_list_book[i]['ref'];
+                          outputDiv1.appendChild(checkbox);
+                          outputDiv1.appendChild(document.createTextNode('\u00A0'));
+                          outputDiv1.appendChild(label);
+                          outputDiv1.appendChild(document.createElement('br'));
+                          outputDiv1.appendChild(document.createElement('br'));
+                        }
+
+
+                      }
+                    }
+                });
+
+
+            }
+            updateSelectedCount_journal();
+            updateSelectedCount_book();
+</script>
+
+<script>
+  function add_reference()
+  {
+    var course = document.getElementById('course').value;
+    var subject = document.getElementById('subject').value;
+    var sub_subject = document.getElementById('sub_subject').value;
+    window.location="/job/breakpath_step_e_auto_reference_create/"+course+"/"+subject+"/"+sub_subject;
+  }
+
+  function check_title_words(a)
+  {
+    var selected_reference = document.getElementById('ref_type').value;
+    input_title = a;
+    var words = input_title.match(/\S+/g); 
+    var wordCount = words.length;
+
+    if (selected_reference == 'Vancouver')
+    {
+        if (wordCount > 12)
+        {
+          swal({
+            title: `Title should not more than 12 words`,
+            icon: "error",
+            cancelButtonColor: '#ff5252',
+            closeOnClickOutside: false,
+            showCancelButton: true,
+            buttons: "OK",
+          })
+
+          .then((result) => {
+            if (result) 
+            {
+
+            }
+            else
+            {
+              
+            }
+          }
+          );
+          
+        }
+    }
+
+  }
+
+  window.load = document.getElementById('reference_show').style.display = 'none';
+
+  function select_ref(a)
+  {
+    if (a != '')
+    {
+      document.getElementById('reference_show').style.display = 'block';
+    }
+    else
+    {
+      document.getElementById('reference_show').style.display = 'none';
+
+    }
+  }
+</script> 
+
+
+
+
+
+{% endblock %}

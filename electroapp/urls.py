@@ -11,6 +11,12 @@ urlpatterns = [
     path('user_logout/', views.user_logout),  
     path('dashboard/', views.dashboard),  
     path('dashboard1/', views.dashboard1),  
+    path('admin_panel/', views.admin_panel),  
+
+    path('productindex/',views.productindex),
+    path('product_update/<id>',views.product_update),
+    path('product_delete/<id>',views.product_delete),
+
 
 ]
 

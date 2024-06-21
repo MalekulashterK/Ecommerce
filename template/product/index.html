@@ -1,0 +1,385 @@
+
+{% extends 'master.html' %}
+{% block content %}
+
+
+<section>
+  <div class="card">
+    <div class="card-header bg-primary">
+      <div class="row">
+        <div class="col-md-4"> 
+          <h4 style="color: aliceblue;">Product Details</h4>
+        </div>
+        <div class="col-md-4"></div>
+              <div class="col-md-4 text-right">
+                  <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#ModalSlide" style="color:black">+ Add New</button>
+                </div>
+
+          </div>
+    </div>
+    <div class="card-body" style="box-shadow: 10px 10px 10px rgba(0,0,0,0.5);">
+
+      <table class="table table-bordered table-striped" style="width:100%;">
+        <thead style="background-color: rgb(2, 11, 43); color: aliceblue;">
+          <tr>
+            <th style="text-align:center">SL No.</th>
+            <th style="text-align:center">Product Name</th>
+            <th style="text-align:center">Price</th>
+            <th style="text-align:center">Quantity</th>
+            <th style="text-align:center">Image</th>
+            <th style="text-align:center">Action</th>         
+          </tr>
+        </thead>
+        <tbody>
+          {% for x in standards %}
+          <tr>
+            <td style="text-align:center">{{ forloop.counter }}</td>
+            <td style="text-align:center">{{ x.pname }}</td>
+            <td style="text-align:center">{{ x.price }}</td>
+            <td style="text-align:center">{{ x.qty }}</td>
+            <td style="text-align:center">
+              <a class="btn btn-warning btn-sm" href="{{ x.image.url }}" download><i class="fa fa-download"></i></a>
+            </td>
+            <td style="text-align:center">
+
+              <form action="/standard_delete/{{ x.id }}" method="POST">
+                {% csrf_token %}
+    
+                <a class="btn btn-info btn-sm"  role="button" data-toggle="modal" data-target="#showmodal{{ x.id }}" style="color:white"><i class="fa fa-eye"></i></a>
+    
+                <a href="/standard_update/{{ x.id }}" class="btn btn-primary btn-sm"  role="button" data-toggle="modal" data-target="#editmodal{{ x.id }}" style="color:white" onclick="func1(this.id)"> <i class="fa fa-edit" style="color:white;"></i></a>
+    
+    
+                
+                {% if user.id == 9 %}
+                <button type="submit" class="btn btn-danger  btn-sm show_confirm" data-toggle="tooltip" title='Delete'> <i class="fa fa-trash" style="color:white;"></i></button>
+    
+                {% endif %}
+                  
+            </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+    <div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true" style="margin-top: -30px; margin-left: 1100px;">
+        <div class="modal-dialog modal-dialog-slideout" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title align-right" id="exampleModalLabel">Add New Product</h5>
+      
+            </div>
+            <div class="modal-body">
+                <form  method="POST" enctype="multipart/form-data">
+                    
+                    {% csrf_token %}
+                    <div class="row">
+                    
+                      <div class="col-md-12">
+                        <div  class='form-group'>
+                          <label class="floating-label">Product Name</label><br>
+                          <input type="text" name="pname" class="form-control inputText"  id="pname" placeholder="Enter Product Name" required>
+                        </div>
+
+                        <div  class='form-group'>
+                          <label class="floating-label">Category</label><br>
+                          <input type="text" name="category" class="form-control inputText"  id="standard" placeholder="Enter Category" required>
+                        </div>
+    
+                        <div  class='form-group'>
+                            <label class="floating-label">Quantity</label><br>
+                            <input type="number" name="qty" class="form-control inputText"  id="standard" placeholder="Enter quantity" required>
+                          </div>
+
+                          <div  class='form-group'>
+                            <label class="floating-label">Price</label><br>
+                            <input type="text" name="price" class="form-control inputText"  id="standard" placeholder="Enter price" required>
+                          </div>
+
+                          <div  class='form-group'>
+                            <label class="floating-label">Description</label><br>
+                            <input type="text" name="description" class="form-control inputText"  id="standard" placeholder="Enter Description" required>
+                          </div>
+
+                          <div class="form-group">
+                            <label>Product Image<span style="color: red;">*</span></label>
+                            <input type="file" name="image" id="ai_fileInput" accept="image/*" class="form-control" onchange="validateAIFileType()" multiple>
+                          </div>
+                      </div>
+    
+                    </div>
+    
+                 
+                          <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                            <br>
+                              <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                        </div>
+                  </div>
+                  </form>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-danger btn-sm" data-dismiss="modal">X</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </div>
+
+
+
+  
+
+</div>
+</div>
+
+<script>
+    function validateAIFileType() {
+       var selectedFile = document.getElementById('ai_fileInput').files[0];
+       var allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+
+       
+       if (!allowedTypes.includes(selectedFile.type)) {
+          
+          swal({
+            title: `'Invalid file type!!`,
+            text: "Please upload a JPEG, PNG file.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        });
+          document.getElementById('ai_fileInput').value = '';
+       }
+    }
+ </script>
+
+
+{% for message in messages %}
+
+{% if 'success' == message.tags %}
+        <script type="text/javascript">
+          // Default Configuration
+              $(document).ready(function() {
+                  toastr.options = {
+                      'closeButton': true,
+                      'debug': false,
+                      'newestOnTop': false,
+                      'progressBar': true,
+                      'positionClass': 'toast-top-right',
+                      'preventDuplicates': false,
+                      'showDuration': '1000',
+                      'hideDuration': '1000',
+                      'timeOut': '3000',
+                      'extendedTimeOut': '1000',
+                      'showEasing': 'swing',
+                      'hideEasing': 'linear',
+                      'showMethod': 'fadeIn',
+                      'hideMethod': 'fadeOut',
+                  }
+              });
+      
+          // Toast Type
+           
+                  toastr.success('Data Submitted Successfully');
+             
+          // Toast Image and Progress Bar
+              $('#image').click(function(event) {
+                  toastr.options.progressBar = true,
+                  toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+              });
+      
+      
+          // Toast Position
+              $('#position').click(function(event) {
+                  var pos = $('input[name=position]:checked', '#positionForm').val();
+                  toastr.options.positionClass = "toast-" + pos;
+                  toastr.options.preventDuplicates = false;
+                  toastr.info('This sample position', 'Toast Position')
+              });
+          </script>
+
+        {% elif 'error' == message.tags %}
+        <script type="text/javascript">
+          // Default Configuration
+              $(document).ready(function() {
+                  toastr.options = {
+                      'closeButton': true,
+                      'debug': false,
+                      'newestOnTop': false,
+                      'progressBar': false,
+                      'positionClass': 'toast-top-right',
+                      'preventDuplicates': false,
+                      'showDuration': '1000',
+                      'hideDuration': '1000',
+                      'timeOut': '5000',
+                      'extendedTimeOut': '1000',
+                      'showEasing': 'swing',
+                      'hideEasing': 'linear',
+                      'showMethod': 'fadeIn',
+                      'hideMethod': 'fadeOut',
+                  }
+              });
+      
+          // Toast Type
+           
+                  toastr.error('Data Deleted Successfully');
+             
+          // Toast Image and Progress Bar
+              $('#image').click(function(event) {
+                  toastr.options.progressBar = true,
+                  toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+              });
+      
+      
+          // Toast Position
+              $('#position').click(function(event) {
+                  var pos = $('input[name=position]:checked', '#positionForm').val();
+                  toastr.options.positionClass = "toast-" + pos;
+                  toastr.options.preventDuplicates = false;
+                  toastr.info('This sample position', 'Toast Position')
+              });
+          </script>
+          
+         {% elif 'info' == message.tags %}
+
+        <script type="text/javascript">
+          // Default Configuration
+              $(document).ready(function() {
+                  toastr.options = {
+                      'closeButton': true,
+                      'debug': false,
+                      'newestOnTop': false,
+                      'progressBar': false,
+                      'positionClass': 'toast-top-right',
+                      'preventDuplicates': false,
+                      'showDuration': '1000',
+                      'hideDuration': '1000',
+                      'timeOut': '5000',
+                      'extendedTimeOut': '1000',
+                      'showEasing': 'swing',
+                      'hideEasing': 'linear',
+                      'showMethod': 'fadeIn',
+                      'hideMethod': 'fadeOut',
+                  }
+              });
+      
+          // Toast Type
+           
+                  toastr.info('Data Updated Successfully');
+             
+          // Toast Image and Progress Bar
+              $('#image').click(function(event) {
+                  toastr.options.progressBar = true,
+                  toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+              });
+      
+      
+          // Toast Position
+              $('#position').click(function(event) {
+                  var pos = $('input[name=position]:checked', '#positionForm').val();
+                  toastr.options.positionClass = "toast-" + pos;
+                  toastr.options.preventDuplicates = false;
+                  toastr.info('This sample position', 'Toast Position')
+              });
+          </script>
+
+          {% elif 'warning' == message.tags %}
+          <script type="text/javascript">
+            // Default Configuration
+                $(document).ready(function() {
+                    toastr.options = {
+                        'closeButton': true,
+                        'debug': false,
+                        'newestOnTop': false,
+                        'progressBar': false,
+                        'positionClass': 'toast-top-right',
+                        'preventDuplicates': false,
+                        'showDuration': '1000',
+                        'hideDuration': '1000',
+                        'timeOut': '5000',
+                        'extendedTimeOut': '1000',
+                        'showEasing': 'swing',
+                        'hideEasing': 'linear',
+                        'showMethod': 'fadeIn',
+                        'hideMethod': 'fadeOut',
+                    }
+                });
+        
+            // Toast Type
+             
+                    toastr.error('Entered Data Already Exists');
+               
+            // Toast Image and Progress Bar
+                $('#image').click(function(event) {
+                    toastr.options.progressBar = true,
+                    toastr.info('<img src="https://image.flaticon.com/icons/svg/34/34579.svg" style="width:150px;">', 'Toast Image')
+                });
+        
+        
+            // Toast Position
+                $('#position').click(function(event) {
+                    var pos = $('input[name=position]:centerhecked', '#positionForm').val();
+                    toastr.options.positionClass = "toast-" + pos;
+                    toastr.options.preventDuplicates = false;
+                    toastr.info('This sample position', 'Toast Position')
+                });
+            </script>
+        {% else %}
+
+        {% endif %}
+  
+        {% endfor %}
+
+
+        <script>
+
+
+          function submitForm(form) {
+            var degree = document.getElementById("degree").value;
+                      
+            
+              swal({
+                  title: "Are you sure Want To Submit?",
+                  text:  "Degree:"+ ' '+ degree+'\n',        
+                  icon: "warning",
+                  dangerMode: true,
+                  
+                  buttons: ["Cancel", "Submit"], 
+        
+              })
+              .then(function (isOkay) {
+                  if (isOkay) {
+                      form.submit();
+                  }
+              });
+              return false;
+          }
+        </script>
+
+
+
+        <script>
+
+
+          function submitForm1(form) {
+            
+              swal({
+                  title: "Are you sure Want To Submit?",
+                  text:  "Please Verify Your Data, Before Final Submission",
+        
+                  icon: "warning",
+                  dangerMode: true,
+                  
+                  buttons: ["Cancel", "Submit"], 
+        
+              })
+              .then(function (isOkay) {
+                  if (isOkay) {
+                      form.submit();
+                  }
+              });
+              return false;
+          }
+        </script>
+</section>
+  {% endblock %}
