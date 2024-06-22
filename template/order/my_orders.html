@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400..700&display=swap');
+
+:root {
+  --color-black: #373636;
+  --color-neutral-1: #f6f5f6;
+  --color-neutral-5: #999798;
+  --color-primary-1: #f0f5f6;
+  --color-primary-2: #dce9eb;
+  --color-primary-3: #c6dcdf;
+  --color-primary-4: #82b1b8;
+  --color-primary: #2874f0;
+  --color-primary-6: #1d5f69;
+  --color-white: #fdfdfe;
+  --font-family-text: 'Inter', sans-serif;
+  --font-family-title: 'Lora', serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font: normal 16px sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  background: var(--color-neutral-1);
+  color: var(--color-black);
+  font: inherit;
+  font-family: var(--font-family-text);
+  font-size: 1rem;
+  line-height: inherit;
+  position: relative;
+}
+
+body::before {
+  background: var(--color-primary);
+  content: '';
+  display: block;
+  height: 30rem;
+  position: absolute;
+  width: 100%;
+  z-index: -1;
+}
+
+a {
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+  text-decoration: none;
+}
+
+button {
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  line-height: inherit;
+}
+
+h1, h2, h3 {
+  color: var(--color-primary);
+  font-family: var(--font-family-title);
+  font-weight: 600;
+  line-height: 1.25;
+}
+h1 { font-size: 3rem; }
+h2 { font-size: 2.25rem; }
+h3 { font-size: 1.5rem; }
+
+i {
+  font-style: normal;
+  line-height: 1;
+}
+
+small {
+  font-size: .75rem;
+  font-weight: 300;
+  letter-spacing: .5px;
+}
+
+small.muted {
+  color: var(--color-neutral-5);
+}
+
+
+/*
+  body content + header + main
+*/
+
+
+.body-content {
+  margin: 0 auto;
+  max-width: 100rem;
+  min-height: 100vh;
+  padding: 0 3rem;
+}
+
+header {
+  background: none;
+  color: var(--color-white);
+  padding: 3rem 0;
+}
+
+main {
+  background: var(--color-white);
+  border-radius: .25rem .25rem 0 0;
+  box-shadow: 0 0 1rem rgba(55, 54, 54, .3);
+  color: var(--color-black);
+  overflow-x: hidden;
+  padding: 3rem;
+}
+
+
+/*
+  links + buttons
+*/
+
+a.link {
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+a.link:hover {
+  color: var(--color-primary-6);
+}
+
+button,
+.button {
+  align-items: center;
+  background: var(--color-primary);
+  border-radius: .25rem;
+  color: var(--color-white);
+  display: inline-flex;
+  font-family: var(--font-family-text);
+  font-size: .875rem;
+  font-weight: bold;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem 2rem;
+}
+
+button.icon,
+.button.icon {
+  border-radius: 50%;
+  height: 3rem;
+  padding: 0;
+  width: 3rem;
+}
+
+button:hover,
+.button:hover {
+  background: var(--color-primary-6);
+}
+
+button.link,
+.button.link {
+  background: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  gap: .5rem;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+button.link:hover,
+.button.link:hover {
+  background: none;
+  color: var(--color-primary-6);
+}
+
+
+/*
+  inputs
+*/
+
+.input {
+  background: var(--color-white);
+  border: 1px solid var(--color-primary-3);
+  border-radius: .25rem;
+  color: var(--color-black);
+  font: inherit;
+  height: 3rem;
+  padding: .75rem 1rem;
+}
+
+.input.checkbox {
+  border: 0;
+  height: 1.5rem;
+  position: relative;
+  width: 1.5;
+}
+
+.input.checkbox::after {
+  background: var(--color-white);
+  border: 1px solid var(--color-primary-3);
+  border-radius: .25rem;
+  box-sizing: border-box;
+  content: '';
+  cursor: pointer;
+  display: inline-flex;
+  height: 1.5rem;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  width: 1.5rem;
+}
+
+.input.checkbox:checked::after {
+  background-color: var(--color-primary);
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgZmlsbD0iI2ZkZmRmZSIgdmlld0JveD0iMCAwIDI1NiAyNTYiPjxwYXRoIGQ9Ik0yMzIuNDksODAuNDlsLTEyOCwxMjhhMTIsMTIsMCwwLDEtMTcsMGwtNTYtNTZhMTIsMTIsMCwxLDEsMTctMTdMOTYsMTgzLDIxNS41MSw2My41MWExMiwxMiwwLDAsMSwxNywxN1oiPjwvcGF0aD48L3N2Zz4=");
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 0;
+}
+
+.input.number {
+  padding-right: .75rem;
+  text-align: right;
+}
+
+.input.small {
+  max-width: 4rem;
+}
+
+
+/*
+  tables
+*/
+
+table {
+  border-collapse: collapse;
+  margin: 1px 0 0;
+  width: 100%;
+}
+
+tr {
+  border-bottom: 1px solid var(--color-primary-3);
+  border-top: 1px solid var(--color-primary-3);
+  margin: -1px 0 0;
+  width: 100%;
+}
+
+tr:hover:not(.selected):not(.no-hover),
+tr.hover {
+  background: var(--color-primary-1);
+  cursor: pointer;
+}
+
+tr.selected {
+  background: var(--color-primary-2);
+}
+
+td,
+th {
+  font: inherit;
+  line-height: inherit;
+  text-align: left;
+  min-width: 3rem;
+}
+
+td:first-of-type,
+th:first-of-type {
+  padding-left: 1.5rem;
+}
+
+td:last-of-type,
+th:last-of-type {
+  padding-right: 1.5rem;
+}
+
+th {
+  color: var(--color-primary-4);
+  font-size: .75rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  padding: 1.5rem 1rem;
+}
+
+td {
+  font-size: .875rem;
+  padding: 1.25rem 1rem;
+}
+
+.bulk-actions {
+  align-items: center;
+  background: var(--color-primary-3);
+  border-radius: .25rem;
+  color: var(--color-black);
+  display: inline-flex;
+  gap: .75rem;
+  padding: .75rem 1.5rem;
+}
+
+.bulk-actions .icon {
+  color: var(--color-primary);
+  cursor: pointer;
+}
+
+.bulk-actions .icon:hover {
+  color: var(--color-primary-6);
+}
+
+
+/*
+  utility
+*/
+
+.flex { display: flex; }
+.flex-column { flex-direction: column; }
+.gap-05 { gap: .5rem; }
+.gap-1 { gap: 1rem; }
+.gap-15 { gap: 1.5rem; }
+.gap-2 { gap: 2rem; }
+.gap-3 { gap: 3rem; }
+.grow { flex-grow: 1; }
+.hidden { display: none; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.leading-none { line-height: 1; }
+
+        </style>
+        <title>ElectroEdge</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body style="zoom:88%">
+        
+        <div class="body-content flex flex-column">
+            <header class="flex gap-2 items-center justify-between">
+                <h2 style="color: white;"><a href="/">ElectroEdge</a></h2>
+            
+
+            </header>
+          
+            <main class="flex flex-column gap-3 grow">
+              <section class="flex gap-2 items-center justify-between">
+                <div id="bulkActions" class="bulk-actions hidden items-center">
+                  <i class="icon" hidden>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256">
+                      <path
+                            d="M216,48H176V40a24,24,0,0,0-24-24H104A24,24,0,0,0,80,40v8H40a8,8,0,0,0,0,16h8V208a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V64h8a8,8,0,0,0,0-16ZM96,40a8,8,0,0,1,8-8h48a8,8,0,0,1,8,8v8H96Zm96,168H64V64H192ZM112,104v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Zm48,0v64a8,8,0,0,1-16,0V104a8,8,0,0,1,16,0Z"
+                            ></path>
+                    </svg>
+                  </i>
+          
+                  <small id="labelItemsSelected">0 items selected</small>
+          
+                  <i class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 256 256">
+                      <path
+                            d="M205.66,194.34a8,8,0,0,1-11.32,11.32L128,139.31,61.66,205.66a8,8,0,0,1-11.32-11.32L116.69,128,50.34,61.66A8,8,0,0,1,61.66,50.34L128,116.69l66.34-66.35a8,8,0,0,1,11.32,11.32L139.31,128Z"
+                            ></path>
+                    </svg>
+                  </i>
+                </div>
+          
+                <h2 id="title" class="leading-none" style="color: black;">My Orders</h2>
+
+              </section>
+          
+              <section class="flex flex-column gap-2">
+                <table>
+                  <tr class="no-hover">
+                    <th style="font-weight: bold;font-size:15px"><span>SL No.</span></th>
+                    <th style="font-weight: bold;font-size:15px"><span>Order Date</span></th>
+                    <th style="font-weight: bold;font-size:15px"><span>Total Product</span></th>
+                    <th style="font-weight: bold;font-size:15px"><span>Total Amount</span></th>
+                    <th style="font-weight: bold;font-size:15px"><span>Action</span></th>
+                  </tr>
+          
+                  {% for x in data %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ x.date }}</td>
+                    <td>{{ x.total_order_count }}</td>
+                    <td>{{ x.total_product_amount }}</td>
+                    <td>
+                        <a href="/my_order_details/{{x.date}}" class="btn btn-info btn-sm"><i class="fa fa-eye" style="font-size: 25px;"></i></a>
+        
+                    </td>
+                  </tr>
+                  {% endfor %}
+          
+                  
+                </table>
+          
+                <section class="flex items-center justify-between">
+                  <small class="muted">1-10 / 123 items</small>
+          
+                  <div class="flex gap-2 items-center">
+                    <div class="flex gap-05 items-center">
+                      <input class="input number small" readonly type="number" value="1" />
+                      <small class="muted">/</small>
+                      <small class="muted">13 pages</small>
+                    </div>
+          
+                    <div class="flex gap-05 items-center">
+                      <button class="button icon link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#247783" viewBox="0 0 256 256">
+                          <path
+                                d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"
+                                ></path>
+                        </svg>
+                      </button>
+          
+                      <button class="button icon link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#247783" viewBox="0 0 256 256">
+                          <path
+                                d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"
+                                ></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </section>
+              </section>
+            </main>
+          </div>
+          
+    </body>
+    <script>
+        (() => {
+  HTMLElement.prototype.toggle = function(on) {
+    switch(on) {
+      case undefined:
+        this.classList.toggle('hidden');
+        break;
+      case true:
+        this.classList.remove('hidden');
+        break;
+      case false:
+        this.classList.add('hidden');
+        break;
+      default:
+        break;
+    }
+  }
+
+  HTMLElement.prototype.hide = function() {
+    this.toggle(false);
+  }
+
+  HTMLElement.prototype.show = function() {
+    this.toggle(true);
+  }
+
+  const table = {
+    checkboxes: document.querySelectorAll('.checkbox'),
+    labelItemsSelected: document.getElementById('labelItemsSelected'),
+    numberItemsSelected: 0,
+    bulkActions: document.getElementById('bulkActions'),
+    title: document.getElementById('title'),
+  };
+
+  let bulkActionsShown = table.numberItemsSelected > 0;
+  console.log(`bulkActionsShown: ${bulkActionsShown}`);
+
+  table.checkboxes.forEach((checkbox) => {
+    checkbox.addEventListener('change', (event) => {
+      table.numberItemsSelected = event.currentTarget.checked
+        ? ++table.numberItemsSelected
+        : --table.numberItemsSelected;
+
+      table.labelItemsSelected.innerHTML = table.numberItemsSelected === 1
+          ? `${table.numberItemsSelected} item selected`
+          : `${table.numberItemsSelected} items selected`;
+
+      bulkActionsShown = table.numberItemsSelected > 0;
+      console.log(`bulkActionsShown: ${bulkActionsShown}`);
+
+      if (bulkActionsShown) {
+        table.bulkActions.show();
+        table.title.hide();
+      }
+      else {
+        table.bulkActions.hide();
+        table.title.show();
+      }
+    });
+  });
+})();
+
+    </script>
+</html>
