@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.utils import timezone
+<<<<<<< HEAD
 import json
 from django.db.models import F
 from django.db.models.functions import TruncDate
@@ -23,6 +24,19 @@ def dashboard(request):
     pdata = Product.objects.all()
 
     compact = {'urole':urole,'pdata':pdata, 'log':log}
+=======
+# Create your views here.
+def dashboard(request):
+    
+    if(request.user.is_authenticated == True):
+        urole = request.user.role
+    else:
+        urole = 'NA'
+
+    pdata = Product.objects.all()
+
+    compact = {'urole':urole,'pdata':pdata}
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
     return render(request, 'dashboard.html',compact)
 
 def dashboard1(request):
@@ -164,6 +178,7 @@ def product_update(request, id):
 def product_delete(request, id):
     Product.objects.filter(id=id).delete()
     messages.error(request, 'Data Submitted Successfully')
+<<<<<<< HEAD
     return redirect('/standardindex/')     
 
 def place_order(request):
@@ -239,3 +254,6 @@ def my_order_details(request, id):
 
 
 
+=======
+    return redirect('/standardindex/')     
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946

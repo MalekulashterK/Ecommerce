@@ -382,12 +382,17 @@ background-color: #fff !important;
   <main>
 
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+<<<<<<< HEAD
        <a class="navbar-brand" href="#" style="letter-spacing: 2px;"><strong>ElectroEdge</strong></a>
+=======
+       <a class="navbar-brand" href="#"><strong>Shopping Cart</strong></a>
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
        </button>
 
+<<<<<<< HEAD
        
 
        <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -401,10 +406,20 @@ background-color: #fff !important;
              <input class="form-control mr-sm-2" type="search" id="search_field"  placeholder="Search" aria-label="Search">
           </form>
           <button type="button" class="btn btn-dark my-2 my-sm-0" data-toggle="modal"
+=======
+       <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+             <input class="form-control mr-sm-2" type="search" id="search_field"  placeholder="Search" aria-label="Search">
+          </form>
+          <button type="button" class="btn btn-primary my-2 my-sm-0" data-toggle="modal"
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
              data-target="#staticBackdrop">
               <i class="fas fa-shopping-cart marginright total-count"></i>
           </button>
 
+<<<<<<< HEAD
           {% if urole == 'Admin' and log == 'Yes' %}
          &emsp; <a class="btn btn-success btn-sm" href="/admin_panel/" style="font-size: 16px;">Admin Panel</a>
 
@@ -422,6 +437,14 @@ background-color: #fff !important;
           
          
           <!-- <button style="margin-left:8px;" class="clear-cart btn btn-danger">Clear Cart</button>      -->
+=======
+          {% if urole == 'Admin' %}
+         &emsp; <a class="navbar-brand" href="/admin_panel/">Admin Panel</a>
+
+          {% endif %}
+         
+          <button style="margin-left:8px;" class="clear-cart btn btn-danger">Clear Cart</button>     
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
           
 
          
@@ -472,7 +495,11 @@ background-color: #fff !important;
                                </div>
                                <div class="content">
                                   <h5><a href="#" style="color: #000000; font-weight: bold;">{{pdt.pname}}</a></h5>
+<<<<<<< HEAD
                                   <hr>  
+=======
+                                  <hr>
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
                                   <div class="content-in">
                                      <h4 style="font-weight: bold;">${{pdt.price}} </h4>
                                   </div>
@@ -507,19 +534,26 @@ background-color: #fff !important;
        aria-labelledby="staticBackdropLabel" aria-hidden="true">
        <div class="modal-dialog modal-dialog-centered modal-lg">
           <div class="modal-content">
+<<<<<<< HEAD
             <form action="/place_order/" method="POST" id="cart_form" onsubmit="clear()">
               {% csrf_token %}
+=======
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
              <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">Your Cart</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                    <span aria-hidden="true">&times;</span>
                 </button>
              </div>
+<<<<<<< HEAD
             
+=======
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
              <div class="modal-body">
                 <table class="show-cart table">
       
                 </table>
+<<<<<<< HEAD
                 <textarea name="cart_details" id="cart_details" hidden></textarea>
                 <div class="grand-total">Total price: ₹<span class="total-cart"></span></div>
               </div>
@@ -530,6 +564,14 @@ background-color: #fff !important;
                 <!-- <button type="button" class="btn btn-danger clear-all">Clear All</button> -->
               </div>
             </form>
+=======
+                <div class="grand-total">Total price: ₹<span class="total-cart"></span></div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-danger clear-all">Clear All</button> -->
+              </div>
+>>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
           </div>
        </div>
     </div>
