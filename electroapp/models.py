@@ -25,14 +25,8 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-<<<<<<< HEAD
     pdetail  =  models.JSONField(max_length=255, null=True)
     total  =  models.CharField(max_length=255, null=True)
-=======
-    pname   =  models.CharField(max_length=255, null=True)
-    price = models.CharField(max_length=255, null=True)
-    qty = models.CharField(max_length=255, null=True)
->>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
     created_at = models.DateTimeField(max_length=255,null=True)
     updated_at = models.DateTimeField(max_length=255, null=True)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user3',null=True)

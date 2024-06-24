@@ -7,13 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.utils import timezone
-<<<<<<< HEAD
 import json
 from django.db.models import F
 from django.db.models.functions import TruncDate
 
 def dashboard(request):
-
+    
     if(request.user.is_authenticated == True):
         urole = request.user.role
         log = 'Yes'
@@ -23,20 +22,7 @@ def dashboard(request):
 
     pdata = Product.objects.all()
 
-    compact = {'urole':urole,'pdata':pdata, 'log':log}
-=======
-# Create your views here.
-def dashboard(request):
-    
-    if(request.user.is_authenticated == True):
-        urole = request.user.role
-    else:
-        urole = 'NA'
-
-    pdata = Product.objects.all()
-
-    compact = {'urole':urole,'pdata':pdata}
->>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
+    compact = {'urole':urole,'pdata':pdata,'log':log}
     return render(request, 'dashboard.html',compact)
 
 def dashboard1(request):
@@ -178,9 +164,9 @@ def product_update(request, id):
 def product_delete(request, id):
     Product.objects.filter(id=id).delete()
     messages.error(request, 'Data Submitted Successfully')
-<<<<<<< HEAD
     return redirect('/standardindex/')     
 
+@login_required(login_url = "/user_login")
 def place_order(request):
     now = datetime.now()
     user_id=User.objects.get(id=request.user.id).id
@@ -202,7 +188,7 @@ def place_order(request):
     messages.error(request, 'Data Submitted Successfully')
     return redirect('/')    
         
-
+@login_required(login_url = "/user_login")
 def my_order(request):
 
     distinct_dates = Order.objects.filter(created_by=request.user.id) \
@@ -242,18 +228,35 @@ def my_order(request):
     compact = {'data': data}
     return render(request,'order/my_orders.html',compact)
 
-
+@login_required(login_url = "/user_login")
 def my_order_details(request, id):
 
     date = id
 
     datewise_order = Order.objects.filter(created_at__startswith = date).values('pdetail')
 
-    return HttpResponse(datewise_order)
 
 
+    for do in datewise_order:
+
+        order_details = []
+        total_qty = 0
+        total_price = 0
+
+        for dat in do['pdetail']:
+
+            orders = {}
+            orders['name'] = dat['name']
+            orders['price'] = dat['price']
+            orders['qty'] = dat['count']
+
+            total_qty =  total_qty + dat['count']
+            total_price = total_price + dat['price']
+
+            order_details.append(orders)
 
 
-=======
-    return redirect('/standardindex/')     
->>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
+    compact = {'date':date,'order_details':order_details,'total_qty':total_qty,'total_price':total_price}
+    
+    return render(request,'order/my_order_details.html', compact)
+  

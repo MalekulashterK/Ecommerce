@@ -17,15 +17,9 @@ urlpatterns = [
     path('product_update/<id>',views.product_update),
     path('product_delete/<id>',views.product_delete),
 
-<<<<<<< HEAD
     path('place_order/', views.place_order),  
     path('my_order/', views.my_order),  
     path('my_order_details/<id>', views.my_order_details),  
-
-
-
-=======
->>>>>>> 56d8bfa082b1df55c6196d413401794aecaf9946
 
 ]
 
