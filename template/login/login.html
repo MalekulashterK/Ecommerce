@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	{% load static %}
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  {% load static %}
+    <meta charset="UTF-8">
+    <title>ElectroEdge</title>
+    <link href="{% static 'assets/electro_logo.png' %}" rel="shortcut icon" />
   <style>
     /* Google Font Link */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
@@ -331,7 +331,7 @@ body{
 
 
         <div class="signup-form">
-          <div class="title">Signup</div>
+          <div class="title">Register</div>
       <form action="/user_register/" method="POST">
         {% csrf_token %}   
 

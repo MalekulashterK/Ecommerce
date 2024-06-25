@@ -25,8 +25,16 @@ class Product(models.Model):
 
 
 class Order(models.Model):
+    order_id  =  models.CharField(max_length=255, null=True)
     pdetail  =  models.JSONField(max_length=255, null=True)
     total  =  models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(max_length=255,null=True)
     updated_at = models.DateTimeField(max_length=255, null=True)
     created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user3',null=True)
+
+class Category(models.Model):
+    category_name   =  models.CharField(max_length=255, null=True)
+    created_at = models.DateTimeField(max_length=255,null=True)
+    updated_at = models.DateTimeField(max_length=255, null=True)
+    created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user4',null=True)
+    updated_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user5',null=True)

@@ -1,57 +1,124 @@
 
-{% extends 'master1.html' %}
+{% extends 'master.html' %}
 {% block content %}
 
 
-<section style="zoom:90%">
+<section>
   <div class="card">
     <div class="card-header bg-primary">
       <div class="row">
         <div class="col-md-4"> 
-          <h5 style="color: aliceblue;">My Orders ({{ date }})</h5>
+          <h4 style="color: aliceblue;">Categories</h4>
         </div>
         <div class="col-md-4"></div>
+              <div class="col-md-4 text-right">
+                  <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#ModalSlide" style="color:black">+ Add New</button>
+                </div>
 
           </div>
     </div>
-    <div class="card-body" style="box-shadow: 10px 10px 10px rgba(0,0,0,0.5);zoom:90%">
+    <div class="card-body" style="box-shadow: 10px 10px 10px rgba(0,0,0,0.5);">
 
       <table class="table table-bordered table-striped" style="width:100%;">
         <thead style="background-color: rgb(2, 11, 43); color: aliceblue;">
           <tr>
             <th style="text-align:center">SL No.</th>
-            <th style="text-align:center">Order ID</th>
-            <th style="text-align:center">Product Name</th>
-            <th style="text-align:center">Quantity</th>
-            <th style="text-align:center">Amount</th>
+            <th style="text-align:center">Category Name</th>
+            <th style="text-align:center">Action</th>         
           </tr>
         </thead>
         <tbody>
-          
-            {% for dats in order_details %}
+          {% for x in standards %}
+          <tr>
+            <td style="text-align:center">{{ forloop.counter }}</td>
+            <td style="text-align:center">{{ x.category_name }}</td>
+            <td style="text-align:center">
 
-              <tr>
-                <td style="text-align:center;font-weight: bold;">{{ forloop.counter }}</td>
-                <td style="text-align:center;font-weight: bold;">{{ dats.order_id }}</td>
-                <td style="text-align:center;font-weight: bold;">{{ dats.name}}</td>
-                <td style="text-align:center;font-weight: bold;">{{ dats.qty }}</td>
-                <td style="text-align:center;font-weight: bold;">${{ dats.price }}</td>
-              </tr>
+              <form action="/category_delete/{{ x.id }}" method="POST">
+                {% csrf_token %}
+    
+                <a class="btn btn-info btn-sm"  role="button" data-toggle="modal" data-target="#showmodal{{ x.id }}" style="color:white"><i class="fa fa-eye"></i></a>
+    
+                <a href="/category_update/{{ x.id }}" class="btn btn-primary btn-sm"  role="button" data-toggle="modal" data-target="#editmodal{{ x.id }}" style="color:white" onclick="func1(this.id)"> <i class="fa fa-edit" style="color:white;"></i></a>
+    
+    
+                {% if request.user.role == 'Admin' %}
+                    <button type="submit" class="btn btn-danger  btn-sm show_confirm" data-toggle="tooltip" title='Delete'> <i class="fa fa-trash" style="color:white;"></i></button>
+                {%endif %}
+                  
+            </form>
+            </td>
+          </tr>
 
-              
-            {% endfor %}
-
-            <tr>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">Total</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">---</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">---</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">{{total_qty}}</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">${{total_price}}</td>
-
-  
-            </tr>
+          <div class="modal fade" id="showmodal{{ x.id }}" tabindex="-1" role="dialog" aria-labelledby="editmodalLabel" aria-hidden="true"  style="margin-top: -30px; margin-left: 800px;">            <div class="modal-dialog modal-dialog-slideout modal-md" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="modal-title" id="editmodalLabel">Show Category</h4>
+                        </div>
+                        <div class="col-md-6 text-right">
+                            <button type="submit" class="btn btn-danger btn-sm" data-dismiss="modal">X</button>
+                        </div>
+                    </div>
+                
+                </div>
+                <div class="modal-body">
         
+                    <div class="card-body">
+                          <div  class='form-group'>
+                            <label>Category Name:</label>
+                            <input type="text" value="{{ x.category_name }}" class="form-control" readonly style="background-color: transparent">
+                          </div>
+    
+                      </div>
+                      </div>
+                    
+                </div>
+              </div>
+            </div>
 
+            <div class="modal fade" id="editmodal{{ x.id }}" tabindex="-1" role="dialog" aria-labelledby="editmodalLabel" aria-hidden="true"  style="margin-top: -30px; margin-left: 800px;"> 
+                <div class="modal-dialog modal-dialog-slideout modal-md" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h4 class="modal-title" id="editmodalLabel">Edit Category</h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <button type="submit" class="btn btn-danger btn-sm" data-dismiss="modal">X</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-body">
+            
+                        <div class="card-body">
+                          <form method = "POST" action="/category_update/{{ x.id }}">
+                            {% csrf_token %}
+                              <div  class='form-group'>
+                                <label>Category Name:</label>
+                                <input type="text" name="category_name" value="{{ x.category_name }}" class="form-control" placeholder="Enter Category Name" required>
+                              </div>
+        
+                 
+                         
+                                  <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                                    <br>
+                                      <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+                                </div>
+                          </div>
+                          </form>
+                          </div>
+                        
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+          {% endfor %}
         </tbody>
       </table>
 
@@ -59,7 +126,7 @@
         <div class="modal-dialog modal-dialog-slideout" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title align-right" id="exampleModalLabel">Add New Product</h5>
+              <h5 class="modal-title align-right" id="exampleModalLabel">Add New Category</h5>
       
             </div>
             <div class="modal-body" style="zoom:88%">
@@ -68,52 +135,17 @@
                     {% csrf_token %}
                     <div class="row">
                     
-                      <div class="col-md-6">
+                      <div class="col-md-12">
 
                         <div  class='form-group'>
-                          <label class="floating-label">Product Name</label><br>
-                          <input type="text" name="pname" class="form-control inputText"  id="pname" placeholder="Enter Product Name" required>
-                        </div>
-
-                        <div  class='form-group'>
-                          <label class="floating-label">Category</label><br>
-                          <input type="text" name="category" class="form-control inputText"  id="standard" placeholder="Enter Category" required>
+                          <label class="floating-label">Category Name</label><br>
+                          <input type="text" name="category_name" class="form-control inputText"  id="category_name" placeholder="Enter Category Name" required>
                         </div>
                        
-                        <div class="form-group">
-                          <label>Product Image<span style="color: red;">*</span></label>
-                          <input type="file" name="image" id="ai_fileInput" accept="image/*" class="form-control" onchange="validateAIFileType()" multiple>
-                        </div>
-                        
-                      </div>
-                      <div class="col-md-6">
-    
-                        <div  class='form-group'>
-                            <label class="floating-label">Quantity</label><br>
-                            <input type="number" name="qty" class="form-control inputText"  id="standard" placeholder="Enter quantity" required>
-                          </div>
-
-                          <div  class='form-group'>
-                            <label class="floating-label">Price</label><br>
-                            <input type="text" name="price" class="form-control inputText"  id="standard" placeholder="Enter price" required>
-                          </div>
-
-
-
                       </div>
     
                     </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div  class='form-group'>
-                          <label class="floating-label">Description</label><br>
-                          <textarea class="form-control" name="description" id="description"></textarea>
-                          <!-- <input type="text" name="description" class="form-control inputText"  id="standard" placeholder="Enter Description" required> -->
-                        </div>
-                      </div>
-
-                    </div>
-    
+   
                  
                           <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                             <br>
@@ -124,6 +156,7 @@
             </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-danger btn-sm" data-dismiss="modal">X</button>
+              
             </div>
           </div>
         </div>

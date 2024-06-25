@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>ElectroEdge</title>
+  <link href="{% static 'assets/electro_logo.png' %}" rel="shortcut icon" />
+</head>
+<body>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<div class="container" style="margin-top:5%;">
+	<div class="row">
+        <div class="jumbotron" style="box-shadow: 2px 2px 4px #000000;">
+            <h2 class="text-center">YOUR ORDER HAS BEEN RECEIVED</h2>
+          <h3 class="text-center">Thank you for your payment, it’s processing</h3>
+          
+          <p class="text-center">Your order # is: {{last_order.order_id}}</p>
+          <p class="text-center">You will be redirected to a new page in 5 seconds..</p>
+
+        </div>
+	</div>
+</div></body>
+<script type="text/javascript">   
+    function Redirect() 
+    {  
+        window.location="http://127.0.0.1:8000/"; 
+    } 
+    setTimeout('Redirect()', 5000);   
+</script>
+</html>
+
+

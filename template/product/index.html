@@ -3,6 +3,8 @@
 {% block content %}
 
 
+
+
 <section>
   <div class="card">
     <div class="card-header bg-primary">
@@ -85,7 +87,12 @@
 
                         <div  class='form-group'>
                           <label class="floating-label">Category</label><br>
-                          <input type="text" name="category" class="form-control inputText"  id="standard" placeholder="Enter Category" required>
+                          <select id="category" class="form-control select2" name="category" style="width: 100%" required>
+                            <option value="" selected disabled>---Select Please---</option>    
+                            {% for cat in category %}
+                              <option value="{{ cat.category_name}}">{{ cat.category_name}}</option>
+                            {% endfor %}
+                        </select>
                         </div>
                        
                         <div class="form-group">
@@ -145,6 +152,10 @@
 </div>
 </div>
 
+
+<script>
+  $('.select2').select2();
+ </script>
 <script>
     function validateAIFileType() {
        var selectedFile = document.getElementById('ai_fileInput').files[0];

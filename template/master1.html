@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>ElectroEdge</title>
-  <title>Document</title>
+  {% load static %}
+  <head>
+    <meta charset="UTF-8">
+    <title>ElectroEdge</title>
+    <link href="{% static 'assets/electro_logo.png' %}" rel="shortcut icon" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.9.6/tailwind.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/2.7.3/alpine.js"></script>
 
@@ -65,7 +64,7 @@
   new DataTable('#example');
 </script>
 </head>
-<body>
+<body style="zoom: 90%;">
   <div class="flex bg-gray-300 h-screen" x-data="{ isSidebarExpanded: true }">
 
     <div class="flex-1 flex flex-col">

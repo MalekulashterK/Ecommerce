@@ -1,132 +1,55 @@
 
-{% extends 'master1.html' %}
+{% extends 'master.html' %}
 {% block content %}
 
 
-<section style="zoom:90%">
+<section style="zoom:88%">
   <div class="card">
-    <div class="card-header bg-primary">
+    <div class="card-header">
       <div class="row">
-        <div class="col-md-4"> 
-          <h5 style="color: aliceblue;">My Orders ({{ date }})</h5>
+        <div class="col-md-12"> 
+          <h4 style="color: black;vertical-align: middle;">Datewise Order Report ({{ from_date }} To {{ to_date }})</h4>
         </div>
-        <div class="col-md-4"></div>
-
-          </div>
+    </div>
+    <hr>
+    <form  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <b>From:</b>
+                <input type="date" class="form-control" name="from_date" required>
+            </div>
+            <div class="col-md-4">
+                <b>To:</b>
+                <input type="date" class="form-control" name="to_date" required>
+            </div>
+            <div class="col-md-4">
+                <br>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </div>
+    </form>
     </div>
     <div class="card-body" style="box-shadow: 10px 10px 10px rgba(0,0,0,0.5);zoom:90%">
 
       <table class="table table-bordered table-striped" style="width:100%;">
         <thead style="background-color: rgb(2, 11, 43); color: aliceblue;">
           <tr>
-            <th style="text-align:center">SL No.</th>
-            <th style="text-align:center">Order ID</th>
-            <th style="text-align:center">Product Name</th>
+            <th style="text-align:center">Order Date</th>
             <th style="text-align:center">Quantity</th>
             <th style="text-align:center">Amount</th>
           </tr>
         </thead>
         <tbody>
-          
-            {% for dats in order_details %}
-
-              <tr>
-                <td style="text-align:center;font-weight: bold;">{{ forloop.counter }}</td>
-                <td style="text-align:center;font-weight: bold;">{{ dats.order_id }}</td>
-                <td style="text-align:center;font-weight: bold;">{{ dats.name}}</td>
-                <td style="text-align:center;font-weight: bold;">{{ dats.qty }}</td>
-                <td style="text-align:center;font-weight: bold;">${{ dats.price }}</td>
-              </tr>
-
-              
-            {% endfor %}
-
-            <tr>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">Total</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">---</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">---</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">{{total_qty}}</td>
-                <td style="text-align:center;font-weight: bold; background-color: rgb(2, 11, 43); color: aliceblue;">${{total_price}}</td>
-
-  
-            </tr>
-        
-
+          {% for x in data %}
+          <tr>
+            <td style="text-align:center;font-weight: bold;font-size:21px;color:#2874f0"><a href="/order_report_in/{{ x.date }}" style="text-decoration: none;">{{ x.date }}</a></td>
+            <td style="text-align:center;font-weight: bold;font-size:17px">{{ x.total_order_count }}</td>
+            <td style="text-align:center;font-weight: bold;font-size:17px">{{ x.total_product_amount }}</td>
+          </tr>
+          {% endfor %}
         </tbody>
       </table>
-
-    <div class="modal fade" id="ModalSlide" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true" style="margin-top: -30px; margin-left: 800px;">
-        <div class="modal-dialog modal-dialog-slideout" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title align-right" id="exampleModalLabel">Add New Product</h5>
-      
-            </div>
-            <div class="modal-body" style="zoom:88%">
-                <form  method="POST" enctype="multipart/form-data">
-                    
-                    {% csrf_token %}
-                    <div class="row">
-                    
-                      <div class="col-md-6">
-
-                        <div  class='form-group'>
-                          <label class="floating-label">Product Name</label><br>
-                          <input type="text" name="pname" class="form-control inputText"  id="pname" placeholder="Enter Product Name" required>
-                        </div>
-
-                        <div  class='form-group'>
-                          <label class="floating-label">Category</label><br>
-                          <input type="text" name="category" class="form-control inputText"  id="standard" placeholder="Enter Category" required>
-                        </div>
-                       
-                        <div class="form-group">
-                          <label>Product Image<span style="color: red;">*</span></label>
-                          <input type="file" name="image" id="ai_fileInput" accept="image/*" class="form-control" onchange="validateAIFileType()" multiple>
-                        </div>
-                        
-                      </div>
-                      <div class="col-md-6">
-    
-                        <div  class='form-group'>
-                            <label class="floating-label">Quantity</label><br>
-                            <input type="number" name="qty" class="form-control inputText"  id="standard" placeholder="Enter quantity" required>
-                          </div>
-
-                          <div  class='form-group'>
-                            <label class="floating-label">Price</label><br>
-                            <input type="text" name="price" class="form-control inputText"  id="standard" placeholder="Enter price" required>
-                          </div>
-
-
-
-                      </div>
-    
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div  class='form-group'>
-                          <label class="floating-label">Description</label><br>
-                          <textarea class="form-control" name="description" id="description"></textarea>
-                          <!-- <input type="text" name="description" class="form-control inputText"  id="standard" placeholder="Enter Description" required> -->
-                        </div>
-                      </div>
-
-                    </div>
-    
-                 
-                          <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            <br>
-                              <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                        </div>
-                  </div>
-                  </form>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-danger btn-sm" data-dismiss="modal">X</button>
-            </div>
-          </div>
-        </div>
       </div>
   </div>
 

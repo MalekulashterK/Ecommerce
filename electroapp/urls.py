@@ -20,6 +20,20 @@ urlpatterns = [
     path('place_order/', views.place_order),  
     path('my_order/', views.my_order),  
     path('my_order_details/<id>', views.my_order_details),  
+    path('after_order/',views.after_order),
+
+    path('categoryindex/',views.categoryindex),
+    path('category_update/<id>',views.category_update),
+    path('category_delete/<id>',views.category_delete),
+    path('search_category/<id>',views.search_category),
+    path('users/', views.users),
+    path('order_report/', views.order_report),
+    path('order_report_in/<id>', views.order_report_in),
+
+
+
+
+    
 
 ]
 
