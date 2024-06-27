@@ -4,22 +4,64 @@
   <meta charset="UTF-8">
   <title>ElectroEdge</title>
   <link href="{% static 'assets/electro_logo.png' %}" rel="shortcut icon" />
+  <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+  <style>
+    @import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+
+.container {
+  margin: auto;
+  width: 400px;
+}
+
+.path--background {
+  fill: rgb(34, 213, 201);
+  stroke: #fff;
+  stroke-width: 0px;
+}
+
+.pulse {
+  fill: rgb(255, 74, 74) !important;
+}
+
+.path--foreground {
+  fill: #eee;
+  stroke: #eee;
+  stroke-width: 2px;
+}
+
+.label {
+  font: 90px "Open Sans";
+  font-weight: 900;
+  text-anchor: middle;
+  fill: rgb(34, 213, 201);
+}
+.timer{
+text-align: center;
+}
+  </style>
 </head>
-<body>
+<body style="background-color: wheat;">
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <div class="container" style="margin-top:5%;">
-	<div class="row">
-        <div class="jumbotron" style="box-shadow: 2px 2px 4px #000000;">
-            <h2 class="text-center">YOUR ORDER HAS BEEN RECEIVED</h2>
-          <h3 class="text-center">Thank you for your payment, it’s processing</h3>
-          
-          <p class="text-center">Your order # is: {{last_order.order_id}}</p>
-          <p class="text-center">You will be redirected to a new page in 5 seconds..</p>
+  <div class="row">
+      <div class="jumbotron" style="box-shadow: 10px 10px 10px #000000;">
+          <h2 class="text-center">YOUR ORDER HAS BEEN RECEIVED</h2>
+        <h3 class="text-center">Thank you for your payment, it’s processing</h3>
+        
+        <p class="text-center">Your order ID is: {{last_order.order_id}}</p>
+        <p class="text-center">You will be redirected to a new page in 5 seconds..</p>
 
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4"><span class="timer"></span></div>
+          <div class="col-md-4"></div>
         </div>
-	</div>
-</div></body>
+
+      </div>
+  </div>
+</div>
+</body>
 <script type="text/javascript">   
     function Redirect() 
     {  
@@ -27,6 +69,136 @@
     } 
     setTimeout('Redirect()', 5000);   
 </script>
+<script>
+  var width = 400,
+  height = 250,
+  timePassed = 0,
+  timeLimit = 5;
+
+var fields = [{
+  value: timeLimit,
+  size: timeLimit,
+  update: function() {
+    return timePassed = timePassed + 1;
+  }
+}];
+
+var nilArc = d3.svg.arc()
+  .innerRadius(width / 3 - 133)
+  .outerRadius(width / 3 - 133)
+  .startAngle(0)
+  .endAngle(2 * Math.PI);
+
+var arc = d3.svg.arc()
+  .innerRadius(width / 3 - 55)
+  .outerRadius(width / 3 - 25)
+  .startAngle(0)
+  .endAngle(function(d) {
+    return ((d.value / d.size) * 2 * Math.PI);
+  });
+
+var svg = d3.select(".timer").append("svg")
+  .attr("width", width)
+  .attr("height", height);
+
+var field = svg.selectAll(".field")
+  .data(fields)
+  .enter().append("g")
+  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")")
+  .attr("class", "field");
+
+var back = field.append("path")
+  .attr("class", "path path--background")
+  .attr("d", arc);
+
+var path = field.append("path")
+  .attr("class", "path path--foreground");
+
+var label = field.append("text")
+  .attr("class", "label")
+  .attr("dy", ".35em");
+
+(function update() {
+
+  field
+    .each(function(d) {
+      d.previous = d.value, d.value = d.update(timePassed);
+    });
+
+  path.transition()
+    .ease("elastic")
+    .duration(500)
+    .attrTween("d", arcTween);
+
+  if ((timeLimit - timePassed) <= 10)
+    pulseText();
+  else
+    label
+    .text(function(d) {
+      return d.size - d.value;
+    });
+
+
+
+  if (timePassed <= timeLimit)
+    setTimeout(update, 1000);
+  else
+    destroyTimer();
+
+})();
+
+function pulseText() {
+  back.classed("pulse", true);
+  label.classed("pulse", true);
+
+  if ((timeLimit - timePassed) >= 0) {
+    label.style("font-size", "120px")
+      .attr("transform", "translate(0," + +4 + ")")
+      .text(function(d) {
+        return d.size - d.value;
+      });
+  }
+
+  label.transition()
+    .ease("elastic")
+    .duration(900)
+    .style("font-size", "90px")
+    .attr("transform", "translate(0," + -10 + ")");
+}
+
+function destroyTimer() {
+  label.transition()
+    .ease("back")
+    .duration(700)
+    .style("opacity", "0")
+    .style("font-size", "5")
+    .attr("transform", "translate(0," + -40 + ")")
+    .each("end", function() {
+      field.selectAll("text").remove()
+    });
+
+  path.transition()
+    .ease("back")
+    .duration(700)
+    .attr("d", nilArc);
+
+  back.transition()
+    .ease("back")
+    .duration(700)
+    .attr("d", nilArc)
+    .each("end", function() {
+      field.selectAll("path").remove()
+    });
+}
+
+function arcTween(b) {
+  var i = d3.interpolate({
+    value: b.previous
+  }, b);
+  return function(t) {
+    return arc(i(t));
+  };
+}
+</script>
+
 </html>
-
-

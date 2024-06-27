@@ -50,9 +50,10 @@ def dashboard1(request):
     
     return render(request, 'dashboard1.html')
 
+@login_required(login_url="/user_login")
 def after_order(request):
     
-    last_order = Order.objects.get(created_by=request.user.id)
+    last_order = Order.objects.filter(created_by=request.user.id).order_by('-created_at').values()[0]
 
     return render(request, 'after_order.html',{'last_order':last_order})
 
