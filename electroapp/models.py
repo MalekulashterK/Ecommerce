@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import *
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 import datetime,os
 # Create your models here.
 
@@ -20,8 +22,8 @@ class Product(models.Model):
     image = models.FileField(upload_to=get_file_path ,null=True)
     created_at = models.DateTimeField(max_length=255,null=True)
     updated_at = models.DateTimeField(max_length=255, null=True)
-    created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user1',null=True)
-    updated_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user2',null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='auth_user1',null=True)
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='auth_user2',null=True)
 
 
 class Order(models.Model):
@@ -30,11 +32,14 @@ class Order(models.Model):
     total  =  models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(max_length=255,null=True)
     updated_at = models.DateTimeField(max_length=255, null=True)
-    created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user3',null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='auth_user3',null=True)
 
 class Category(models.Model):
     category_name   =  models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(max_length=255,null=True)
     updated_at = models.DateTimeField(max_length=255, null=True)
-    created_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user4',null=True)
-    updated_by = models.ForeignKey(User,on_delete=models.CASCADE, related_name='auth_user5',null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='auth_user4',null=True)
+    updated_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE, related_name='auth_user5',null=True)
+
+class CustomUser(AbstractUser):
+    role = models.CharField(max_length=100)

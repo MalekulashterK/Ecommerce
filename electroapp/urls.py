@@ -39,5 +39,5 @@ urlpatterns = [
 
 
 
-urlpatterns += static('/cloud/', document_root='D:/cloud')
+urlpatterns += static('/cloud/', document_root='C:/cloud')
 

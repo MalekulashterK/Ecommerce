@@ -1,5 +1,5 @@
 from django.shortcuts import render, HttpResponse, redirect
-from django.contrib.auth import authenticate, logout, login
+from django.contrib.auth import authenticate, logout, login, get_user_model
 from electroapp.models import *
 from datetime import datetime
 from django.contrib.auth.models import User
@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.files.storage import default_storage
 from django.utils import timezone
+from .forms import CustomUserCreationForm
+
 import json
 import matplotlib.pyplot as plt
 import io
@@ -14,6 +16,8 @@ import base64
 from django.db.models import F
 from django.db.models.functions import TruncDate
 import pandas as pd
+
+User = get_user_model()
 
 def dashboard(request):
     
