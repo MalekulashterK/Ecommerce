@@ -1,3 +1,7 @@
 *.pyc
 *.pyo
 .git
+staticfiles
+media
+docs
+tests
